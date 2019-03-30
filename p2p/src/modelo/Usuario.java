@@ -1,7 +1,7 @@
 package modelo;
 
 public class Usuario {
-    private String nombreUsuario;
+    private final String nombreUsuario;
     private String password;
     
     public Usuario (String n, String p) {
@@ -16,6 +16,12 @@ public class Usuario {
     public String getPassword() {
         return password;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    
 
     
     
