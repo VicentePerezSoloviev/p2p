@@ -9,6 +9,18 @@ package cliente;
  *
  * @author Usuario
  */
-public class InterfazCliente {
+public interface InterfazCliente {
+    
+    /* Funcion para comprobar al principio de la conexión los amigos conectados de cada usuario */
+    public void amigosConectados(String [] nombres);
+    
+    /*Funcion para notificar una nueva conexión de un amigo de usuario una vez la aplicación se está ejecutando, se ha de usar en bucle*/
+    public void notificarAmigoConectado(String nombre);
+    
+    /* */
+    
+    public void peticionAmistad(String emisor);
+    
+    
     
 }
