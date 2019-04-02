@@ -10,6 +10,8 @@ package cliente;
  * @author Usuario
  */
 public class ImplementacionCliente implements InterfazCliente {
+    
+    public ImplementacionCliente()
 
     @Override
     public void amigosConectados(String[] nombres) {
