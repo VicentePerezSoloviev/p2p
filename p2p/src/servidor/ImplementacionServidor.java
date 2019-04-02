@@ -38,7 +38,16 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
 
     @Override
     public boolean iniciarSesion(Usuario u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /*Comprobamos si existe el usuario que se pasa por parametro*/
+        ArrayList<Usuario> array = this.listarUsuarios();
+        
+        for (Usuario array1 : array) {
+            if (array1.getNombreUsuario().equals(u.getNombreUsuario()) && array1.getPassword().equals(u.getPassword())){
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     @Override
