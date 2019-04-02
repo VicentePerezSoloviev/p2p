@@ -8,10 +8,13 @@ import modelo.Usuario;
 public class ImplementacionServidor extends UnicastRemoteObject implements InterfazServidor{
     
     private final DAOUsuario daoUsuario;
+    private final Hilo hilo;
     
     public ImplementacionServidor () throws RemoteException {
         super();
+        this.hilo = new Hilo(this);
         this.daoUsuario = new DAOUsuario();
+        this.hilo.start();
     }
     
     
@@ -43,6 +46,9 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         
         for (Usuario array1 : array) {
             if (array1.getNombreUsuario().equals(u.getNombreUsuario()) && array1.getPassword().equals(u.getPassword())){
+                
+                this.hilo.anadirUsuarioConectado(u);
+                
                 return true;
             }
         }
