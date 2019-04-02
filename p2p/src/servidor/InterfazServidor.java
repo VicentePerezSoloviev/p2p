@@ -38,4 +38,46 @@ public interface InterfazServidor {
     - null en caso de error
     */
     public ArrayList<Usuario> listarUsuarios ();
+    
+    /*
+    Funcion para añadir el usuario a la lista de usuarios conectados
+    Tambien comprueba si existe en la BBDD con usuario y contrasena
+    Devuelve:
+    - true: en caso de exito
+    - false: error
+    */
+    public boolean iniciarSesion(Usuario u);
+    
+    /*
+    Quitar de lista de usuarios conectados
+    */
+    public boolean cerrarSesion(String u);
+    
+    /*
+    Devuelve la lista de usuarios que tienen como amigo al usuario que se 
+    pasa por parametro
+    */
+    public ArrayList<String> listarUsuariosConectados(String u);
+    
+    /*
+    Devuelve un array con la lista de amigos que esten conectados a partir de la tabla
+    relacion entre amigos : grupos de amigos
+    */
+    public ArrayList<String> listarAmigosConectados(String u);
+    
+    /*Creamos peticion */
+    public void crearPeticionAmistad(String emisor, String receptor);
+    
+    /*
+    Responder B si o no
+    Actualizar en bbdd
+    */
+    public void responderPeticionAmistad(String emisor, String receptor, boolean respuesta);
+    
+    public ArrayList<String> obtenerPeticionesAmistad(String u);
+    
+    
+    
+    
+    
 }
