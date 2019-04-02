@@ -5,16 +5,30 @@
  */
 package cliente;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import modelo.Usuario;
+import servidor.InterfazServidor;
+
 /**
  *
  * @author Usuario
  */
 public class VPrincipal extends javax.swing.JPanel {
 
-    /**
-     * Creates new form VPrincipal
-     */
-    public VPrincipal() {
+    private InterfazServidor servidor;
+    private final InterfazCliente cliente;
+    
+    public VPrincipal(String url) throws NotBoundException, MalformedURLException, RemoteException {
+        servidor = (InterfazServidor) Naming.lookup(url);
+        System.out.println("Lookup completado.");
+        cliente = new ImplementacionCliente(this);
+        
         initComponents();
     }
 
@@ -46,8 +60,18 @@ public class VPrincipal extends javax.swing.JPanel {
         contra.setText("Contraseña");
 
         botonIdenficarse.setText("Identificarse");
+        botonIdenficarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonIdenficarseActionPerformed(evt);
+            }
+        });
 
         botonRegistrarse.setText("Registrarse");
+        botonRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRegistrarseActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -86,7 +110,54 @@ public class VPrincipal extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_nombreUsuarioActionPerformed
 
+    private void botonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarseActionPerformed
+        servidor.
+    }//GEN-LAST:event_botonRegistrarseActionPerformed
 
+    private void botonIdenficarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIdenficarseActionPerformed
+        Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
+        servidor.introducirUsuario(usuario);
+    }//GEN-LAST:event_botonIdenficarseActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(VPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        
+        //</editor-fold>
+
+        InputStreamReader is = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(is);
+        String portNum, registryURL;
+        try{     
+            System.out.println("(CLIENTE) Introduzca el nÃºmero de puerto de RMIregistry:");
+            portNum = (br.readLine()).trim();
+            registryURL = "rmi://localhost:" + portNum + "/bolsamadrid";
+            
+            VPrincipal graficos = new VPrincipal(registryURL);
+            graficos.setVisible(true);
+         }
+         catch (IOException re) {
+            System.out.println("Exception in Server.main: " + re);
+         }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonIdenficarse;
     private javax.swing.JButton botonRegistrarse;
