@@ -47,8 +47,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         for (Usuario array1 : array) {
             if (array1.getNombreUsuario().equals(u.getNombreUsuario()) && array1.getPassword().equals(u.getPassword())){
                 
-                this.hilo.anadirUsuarioConectado(u);
-                
+                this.hilo.anadirUsuarioConectado(u);        //anadimos a array de usuarios conectados de hilo
                 return true;
             }
         }
@@ -58,12 +57,20 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
 
     @Override
     public boolean cerrarSesion(String u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Usuario usuario = new Usuario (u, null);
+        this.hilo.eliminarUsuarioConectado(usuario);
+        return true;
     }
 
     @Override
     public ArrayList<String> listarUsuariosConectados(String u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<String> arrayString = new ArrayList<>();
+        
+        for (Usuario us: this.hilo.getListaUsuariosConectados()){
+            arrayString.add(us.getNombreUsuario());
+        }
+        
+        return arrayString;
     }
 
     @Override

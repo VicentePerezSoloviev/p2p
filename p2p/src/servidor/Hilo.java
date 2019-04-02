@@ -29,10 +29,21 @@ public class Hilo extends Thread {
     public void eliminarUsuarioConectado (Usuario al) {
         if (al != null){
             synchronized (listaUsuariosConectados) {       //bloqueo
-                this.listaUsuariosConectados.remove(al);      //añadir al array
+                
+                for (Usuario u: listaUsuariosConectados){
+                    if (u.getNombreUsuario().equals(al.getNombreUsuario())) {
+                        this.listaUsuariosConectados.remove(u);      //añadir al array
+                        break;
+                    }
+                }
             }
         }
     }
+
+    public ArrayList<Usuario> getListaUsuariosConectados() {
+        return listaUsuariosConectados;
+    }
+    
     
     @Override
     public void run() {
