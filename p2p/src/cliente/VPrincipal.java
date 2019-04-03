@@ -13,6 +13,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Usuario;
@@ -115,19 +117,27 @@ public class VPrincipal extends javax.swing.JPanel {
 
     private void botonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarseActionPerformed
         Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
-        servidor.introducirUsuario(usuario);
+        try {
+            servidor.introducirUsuario(usuario);
+        } catch (RemoteException ex) {
+            Logger.getLogger(VPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_botonRegistrarseActionPerformed
 
     private void botonIdenficarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIdenficarseActionPerformed
         Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
-        if(servidor.iniciarSesion(usuario)){
-            VAmigos graficos = new VAmigos(usuario.getNombreUsuario());
-            graficos.setVisible(true);
-        }
-        else{
-            this.contra.setText("");
-            this.nombreUsuario.setBackground(Color.red);
-            JOptionPane.showMessageDialog(new JPanel(), "Usuario o contraseña incorrectos", "Error de autentificación", JOptionPane.ERROR_MESSAGE);
+        try {
+            if(servidor.iniciarSesion(usuario)){
+                VAmigos graficos = new VAmigos(usuario.getNombreUsuario());
+                graficos.setVisible(true);
+            }
+            else{
+                this.contra.setText("");
+                this.nombreUsuario.setBackground(Color.red);
+                JOptionPane.showMessageDialog(new JPanel(), "Usuario o contraseña incorrectos", "Error de autentificación", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(VPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonIdenficarseActionPerformed
 
@@ -163,6 +173,7 @@ public class VPrincipal extends javax.swing.JPanel {
             registryURL = "rmi://localhost:" + portNum + "/mensajeria";
             
             VPrincipal graficos = new VPrincipal(registryURL);
+            graficos.setEnabled(true);
             graficos.setVisible(true);
          }
          catch (IOException re) {

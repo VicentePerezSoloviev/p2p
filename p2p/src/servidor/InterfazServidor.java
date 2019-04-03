@@ -1,15 +1,17 @@
 package servidor;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import modelo.Usuario;
 
-public interface InterfazServidor {
+public interface InterfazServidor extends Remote {
     
     /*Funcion para introducir un usuario nuevo en la base de datos
     Devuelve:
     - true: se ha insertado correctamente usuario en la base de datos
     - false: ha habido algun error y el usuario no se ha introducido correctamente*/
-    public boolean introducirUsuario (Usuario usuario);
+    public boolean introducirUsuario (Usuario usuario) throws RemoteException;
     
     
     /*Funcion para cambiar la contrasena de un usuario. Se le debe pasar el usuario con
@@ -17,7 +19,7 @@ public interface InterfazServidor {
     Devuelve:
     - usuario con contrasena cambiada: en caso de exito
     - null: en caso de error*/
-    public Usuario cambiarContrasena (Usuario usuario, String nuevaContrasena);
+    public Usuario cambiarContrasena (Usuario usuario, String nuevaContrasena) throws RemoteException;
     
     
     /*Funcion para eliminar un usuario de la base de datos de usuarios. Se le debe pasar
@@ -25,14 +27,14 @@ public interface InterfazServidor {
     Devuelve:
     - true: en caso de exito
     - false: en caso de error*/
-    public boolean eliminarUsuario (Usuario usuario);
+    public boolean eliminarUsuario (Usuario usuario) throws RemoteException;
     
     
     /*Funcion para listar todos los usuarios existentes en la base de datos
     Devuelve:
     - array con todos los usuarios en caso de exito
     - null en caso de error*/
-    public ArrayList<Usuario> listarUsuarios ();
+    public ArrayList<Usuario> listarUsuarios () throws RemoteException;
     
     
     /*Funcion para añadir el usuario a la lista de usuarios conectados
@@ -40,32 +42,32 @@ public interface InterfazServidor {
     Devuelve:
     - true: en caso de exito
     - false: error*/
-    public boolean iniciarSesion(Usuario u);
+    public boolean iniciarSesion(Usuario u) throws RemoteException;
     
     
     /*Quitar de lista de usuarios conectados*/
-    public boolean cerrarSesion(String u);
-    
+    public boolean cerrarSesion(String u) throws RemoteException;
+     
     
     /*Devuelve un array con la lista de amigos que esten conectados a partir de la tabla
     relacion entre amigos : grupos de amigos*/
-    public ArrayList<String> listarAmigosConectados(String u);
+    public ArrayList<String> listarAmigosConectados(String u) throws RemoteException;
     
     
     /*Devuelve la lista de peticiones que todavia estan sin responder para el usuarii
     que se pasa por parametro*/
-    public ArrayList<String> listarPeticionesPendientes (String usuario);
+    public ArrayList<String> listarPeticionesPendientes (String usuario) throws RemoteException;
     
     
     /*Creamos peticion */
-    public void crearPeticionAmistad(String emisor, String receptor);
+    public void crearPeticionAmistad(String emisor, String receptor) throws RemoteException;
     
     
     /*Responder B si o no
     Actualizar en bbdd*/
-    public void responderPeticionAmistad(String emisor, String receptor, boolean respuesta);
+    public void responderPeticionAmistad(String emisor, String receptor, boolean respuesta) throws RemoteException;
     
-    public ArrayList<String> obtenerPeticionesAmistad(String u);
+    public ArrayList<String> obtenerPeticionesAmistad(String u) throws RemoteException;
     
     
     

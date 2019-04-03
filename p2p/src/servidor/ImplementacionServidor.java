@@ -20,27 +20,27 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     
     
     @Override
-    public boolean introducirUsuario (Usuario usuario) {
+    public boolean introducirUsuario (Usuario usuario) throws RemoteException {
         return this.daoUsuario.introducirUsuario(usuario);
     }
     
     @Override
-    public Usuario cambiarContrasena (Usuario usuario, String nuevaContrasena) {
+    public Usuario cambiarContrasena (Usuario usuario, String nuevaContrasena) throws RemoteException{
         return this.daoUsuario.cambiarContrasena(usuario, nuevaContrasena);
     }
     
     @Override
-    public boolean eliminarUsuario (Usuario usuario) {
+    public boolean eliminarUsuario (Usuario usuario) throws RemoteException{
         return this.daoUsuario.eliminarUsuario(usuario);
     }
     
     @Override
-    public ArrayList<Usuario> listarUsuarios () {
+    public ArrayList<Usuario> listarUsuarios () throws RemoteException{
         return this.daoUsuario.listarUsuarios();
     }
 
     @Override
-    public boolean iniciarSesion(Usuario u) {
+    public boolean iniciarSesion(Usuario u) throws RemoteException{
         /*Comprobamos si existe el usuario que se pasa por parametro*/
         ArrayList<Usuario> array = this.listarUsuarios();
         
@@ -56,7 +56,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     }
 
     @Override
-    public boolean cerrarSesion(String u) {
+    public boolean cerrarSesion(String u) throws RemoteException{
         Usuario usuario = new Usuario (u, null);
         this.hilo.eliminarUsuarioConectado(usuario);
         return true;
@@ -73,7 +73,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     }
 
     @Override
-    public ArrayList<String> listarAmigosConectados(String u) {
+    public ArrayList<String> listarAmigosConectados(String u) throws RemoteException{
         ArrayList<String> usuariosConectados = this.listarUsuariosConectados();
         ArrayList<String> amigosUsuario = this.daoUsuario.listarAmigos(u);
         
@@ -84,7 +84,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     }
 
     @Override
-    public void crearPeticionAmistad(String emisor, String receptor) {
+    public void crearPeticionAmistad(String emisor, String receptor) throws RemoteException{
         if (!emisor.equals(receptor)) {
             int a=0;
             for (Usuario u: this.daoUsuario.listarUsuarios()) {
@@ -97,17 +97,17 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     }
     
     @Override
-    public ArrayList<String> listarPeticionesPendientes (String usuario) {
+    public ArrayList<String> listarPeticionesPendientes (String usuario) throws RemoteException{
         return this.daoUsuario.listarPeticiones(usuario);
     }
 
     @Override
-    public void responderPeticionAmistad(String emisor, String receptor, boolean respuesta) {
+    public void responderPeticionAmistad(String emisor, String receptor, boolean respuesta) throws RemoteException{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<String> obtenerPeticionesAmistad(String u) {
+    public ArrayList<String> obtenerPeticionesAmistad(String u) throws RemoteException{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
