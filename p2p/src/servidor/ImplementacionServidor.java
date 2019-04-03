@@ -62,8 +62,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         return true;
     }
 
-    @Override
-    public ArrayList<String> listarUsuariosConectados(String u) {
+    public ArrayList<String> listarUsuariosConectados() {
         ArrayList<String> arrayString = new ArrayList<>();
         
         for (Usuario us: this.hilo.getListaUsuariosConectados()){
@@ -75,12 +74,31 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
 
     @Override
     public ArrayList<String> listarAmigosConectados(String u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<String> usuariosConectados = this.listarUsuariosConectados();
+        ArrayList<String> amigosUsuario = this.daoUsuario.listarAmigos(u);
+        
+        usuariosConectados.retainAll(amigosUsuario);
+        if (usuariosConectados.contains(u)) usuariosConectados.remove(u);       //nunca se ejecuta??
+        
+        return usuariosConectados;
     }
 
     @Override
     public void crearPeticionAmistad(String emisor, String receptor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!emisor.equals(receptor)) {
+            int a=0;
+            for (Usuario u: this.daoUsuario.listarUsuarios()) {
+                if (u.getNombreUsuario().equals(emisor)) a++;
+                if (u.getNombreUsuario().equals(receptor)) a++;
+            }
+            if (a>=2) this.daoUsuario.crearPeticion(emisor,receptor);
+        }
+        
+    }
+    
+    @Override
+    public ArrayList<String> listarPeticionesPendientes (String usuario) {
+        return this.daoUsuario.listarPeticiones(usuario);
     }
 
     @Override

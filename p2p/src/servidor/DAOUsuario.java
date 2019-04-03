@@ -22,7 +22,7 @@ public class DAOUsuario {
     
     @SuppressWarnings("null")
     public boolean introducirUsuario (Usuario usuario) {
-        String query = "INSERT INTO usuarios (nombre, password) VALUES (" + usuario.getNombreUsuario() + "," + usuario.getPassword() + ")";
+        String query = "INSERT INTO usuarios (nombre, password) VALUES ('" + usuario.getNombreUsuario() + "','" + usuario.getPassword() + "')";
         boolean resultado=false;
         
         if (usuario == null) return false;       //el usuario no es valido
@@ -125,6 +125,133 @@ public class DAOUsuario {
         return null;
     }
     
+    public ArrayList<String> listarPeticiones (String usuario){
+        ArrayList<String> array = new ArrayList<>();
+        
+        String query = "SELECT nombreB FROM AMG_PET WHERE nombreA='"+usuario+"' AND EST_PET=0;";
+        String name;
+        
+        /*Cogemos todos los amigos cuando usuario es el nombreA*/
+        
+        try {
+            conn = DriverManager.getConnection(url, nombre, passwd);
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            
+            while (rs.next()) {
+                name = rs.getString("nombreB");
+                array.add(name);
+            }
+            
+            st.close();
+            
+        }catch (SQLException e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+        
+        /*Cogemos todos los amigos cuando usuario es el nombreB*/
+        
+        query = "SELECT nombreA FROM AMG_PET WHERE nombreB='"+usuario+"';";
+        boolean check;
+        
+        try {
+            conn = DriverManager.getConnection(url, nombre, passwd);
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            
+            while (rs.next()) {
+                name = rs.getString("nombreA");
+                check = checkifExist(array, name);
+                if (!check) array.add(name);
+            }
+            
+            st.close();
+            
+        }catch (SQLException e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+        
+        return array;
+    }
     
+    public ArrayList<String> listarAmigos (String usuario){
+        ArrayList<String> array = new ArrayList<>();
+        
+        String query = "SELECT nombreB FROM AMG_PET WHERE nombreA='"+usuario+"' AND EST_PET=1;";
+        String name;
+        
+        /*Cogemos todos los amigos cuando usuario es el nombreA*/
+        
+        try {
+            conn = DriverManager.getConnection(url, nombre, passwd);
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            
+            while (rs.next()) {
+                name = rs.getString("nombreB");
+                array.add(name);
+            }
+            
+            st.close();
+            
+        }catch (SQLException e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+        
+        /*Cogemos todos los amigos cuando usuario es el nombreB*/
+        
+        query = "SELECT nombreA FROM AMG_PET WHERE nombreB='"+usuario+"';";
+        boolean check;
+        
+        try {
+            conn = DriverManager.getConnection(url, nombre, passwd);
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            
+            while (rs.next()) {
+                name = rs.getString("nombreA");
+                check = checkifExist(array, name);
+                if (!check) array.add(name);
+            }
+            
+            st.close();
+            
+        }catch (SQLException e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+        
+        return array;
+    }
+    
+    /*
+    devuelve:
+    true si existe
+    false si no existe
+    */
+    private boolean checkifExist (ArrayList<String> array, String u) {
+        for (String us: array) {
+            if (us.equals(u)) return true;
+        }
+        return false;
+    }
+
+    public void crearPeticion(String emisor, String receptor) {
+        String query = "INSERT INTO AMG_PET values ('"+emisor+"','"+receptor+"', 0);";
+        
+        try {
+            ejecutarSentencia(query);
+            conn.close();
+          }
+          catch (SQLException e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+          }
+    }
     
 }
+
+
