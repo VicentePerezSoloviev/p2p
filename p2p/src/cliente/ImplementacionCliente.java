@@ -5,13 +5,19 @@
  */
 package cliente;
 
+import java.rmi.RemoteException;
+
 /**
  *
  * @author Usuario
  */
 public class ImplementacionCliente implements InterfazCliente {
     
-    public ImplementacionCliente()
+    private VAmigos ventanaAmigos;
+    
+    public ImplementacionCliente()throws RemoteException {
+        super();
+    }
 
     @Override
     public void amigosConectados(String[] nombres) {

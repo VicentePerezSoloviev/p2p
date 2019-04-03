@@ -5,6 +5,7 @@
  */
 package cliente;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +13,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import modelo.Usuario;
 import servidor.InterfazServidor;
 
@@ -27,7 +30,7 @@ public class VPrincipal extends javax.swing.JPanel {
     public VPrincipal(String url) throws NotBoundException, MalformedURLException, RemoteException {
         servidor = (InterfazServidor) Naming.lookup(url);
         System.out.println("Lookup completado.");
-        cliente = new ImplementacionCliente(this);
+        cliente = new ImplementacionCliente();
         
         initComponents();
     }
@@ -111,18 +114,27 @@ public class VPrincipal extends javax.swing.JPanel {
     }//GEN-LAST:event_nombreUsuarioActionPerformed
 
     private void botonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarseActionPerformed
-        servidor.
+        Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
+        servidor.introducirUsuario(usuario);
     }//GEN-LAST:event_botonRegistrarseActionPerformed
 
     private void botonIdenficarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIdenficarseActionPerformed
         Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
-        servidor.introducirUsuario(usuario);
+        if(servidor.iniciarSesion(usuario)){
+            VAmigos graficos = new VAmigos(usuario.getNombreUsuario());
+            graficos.setVisible(true);
+        }
+        else{
+            this.contra.setText("");
+            this.nombreUsuario.setBackground(Color.red);
+            JOptionPane.showMessageDialog(new JPanel(), "Usuario o contraseña incorrectos", "Error de autentificación", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_botonIdenficarseActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws NotBoundException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
