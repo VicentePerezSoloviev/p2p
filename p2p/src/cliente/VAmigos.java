@@ -40,6 +40,11 @@ public class VAmigos extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
 
         botonAnadirAmigo.setText("Añadir amigo");
+        botonAnadirAmigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAnadirAmigoActionPerformed(evt);
+            }
+        });
 
         jTextField1.setText("Nombre de amigo");
 
@@ -128,8 +133,14 @@ public class VAmigos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonPeticionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPeticionesActionPerformed
-        // TODO add your handling code here:
+        VPeticiones graficos = new VPeticiones(this.nombreUsuario.getText());
+        graficos.setVisible(true);
     }//GEN-LAST:event_botonPeticionesActionPerformed
+
+    private void botonAnadirAmigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnadirAmigoActionPerformed
+        VAnadir graficos = new VAnadir(this.nombreUsuario.getText());
+        graficos.setVisible(true);
+    }//GEN-LAST:event_botonAnadirAmigoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

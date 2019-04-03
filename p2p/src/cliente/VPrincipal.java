@@ -46,9 +46,9 @@ public class VPrincipal extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         nombreUsuario = new javax.swing.JTextField();
-        contra = new javax.swing.JTextField();
         botonIdenficarse = new javax.swing.JButton();
         botonRegistrarse = new javax.swing.JButton();
+        contra = new javax.swing.JPasswordField();
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("LOGIN");
@@ -59,8 +59,6 @@ public class VPrincipal extends javax.swing.JPanel {
                 nombreUsuarioActionPerformed(evt);
             }
         });
-
-        contra.setText("Contraseña");
 
         botonIdenficarse.setText("Identificarse");
         botonIdenficarse.addActionListener(new java.awt.event.ActionListener() {
@@ -76,6 +74,8 @@ public class VPrincipal extends javax.swing.JPanel {
             }
         });
 
+        contra.setText("contraseña");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -83,9 +83,9 @@ public class VPrincipal extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(contra)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nombreUsuario)
-                    .addComponent(contra)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(botonRegistrarse)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -101,7 +101,7 @@ public class VPrincipal extends javax.swing.JPanel {
                 .addComponent(nombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(contra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botonRegistrarse, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
                     .addComponent(botonIdenficarse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -160,7 +160,7 @@ public class VPrincipal extends javax.swing.JPanel {
         try{     
             System.out.println("(CLIENTE) Introduzca el nÃºmero de puerto de RMIregistry:");
             portNum = (br.readLine()).trim();
-            registryURL = "rmi://localhost:" + portNum + "/bolsamadrid";
+            registryURL = "rmi://localhost:" + portNum + "/mensajeria";
             
             VPrincipal graficos = new VPrincipal(registryURL);
             graficos.setVisible(true);
@@ -173,7 +173,7 @@ public class VPrincipal extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonIdenficarse;
     private javax.swing.JButton botonRegistrarse;
-    private javax.swing.JTextField contra;
+    private javax.swing.JPasswordField contra;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField nombreUsuario;
     // End of variables declaration//GEN-END:variables
