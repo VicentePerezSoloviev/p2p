@@ -43,7 +43,7 @@ public class Servidor {
             
             ImplementacionServidor objetoExportar = new ImplementacionServidor();      //funcion para calcular pi
             
-            url = "rmi://" + nombreHost + ":" + numPuerto + "/bolsa";      //creo URL
+            url = "rmi://" + nombreHost + ":" + numPuerto + "/mensajeria";      //creo URL
             
             //Conecta con RMIRegistry en este ordenador y le avisa que exportedObj debe publicarse al exterior
             Naming.rebind(url, objetoExportar);
