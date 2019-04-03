@@ -5,26 +5,33 @@
  */
 package cliente;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 /**
  *
  * @author Usuario
  */
-public class ImplementacionCliente implements InterfazCliente {
+public class ImplementacionCliente extends UnicastRemoteObject implements InterfazCliente {
     
-    public ImplementacionCliente()
+    private VAmigos ventanaAmigos;
+    
+    public ImplementacionCliente() throws RemoteException {
+        super();
+    }
 
     @Override
-    public void amigosConectados(String[] nombres) {
+    public void amigosConectados(String[] nombres) throws RemoteException{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void notificarAmigoConectado(String nombre) {
+    public void notificarAmigoConectado(String nombre) throws RemoteException{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void peticionAmistad(String emisor) {
+    public void peticionAmistad(String emisor) throws RemoteException{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
