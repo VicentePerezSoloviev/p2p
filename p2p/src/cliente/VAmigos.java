@@ -5,6 +5,9 @@
  */
 package cliente;
 
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
@@ -15,6 +18,9 @@ public class VAmigos extends javax.swing.JPanel {
      * Creates new form VAmigos
      * @param usuario
      */
+    
+    ImageIcon icono=new ImageIcon(getClass().getResource("./iconos/chat.png"));
+    
     public VAmigos(String usuario) {
                 
         initComponents();
@@ -37,6 +43,23 @@ public class VAmigos extends javax.swing.JPanel {
         botonPeticiones = new javax.swing.JButton();
         botonBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
+        Object [][] rows = {
+            {"usuario", this.icono}
+        };
+
+        String [] columns = {"usuario", "icono"};
+
+        DefaultTableModel modelo = new DefaultTableModel(rows,columns)
+        {
+            @Override
+            public Class <?> getColumnClass (int column){
+                switch(column){
+                    case 0: return String.class;
+                    case 1: return ImageIcon.class;
+                    default: return Object.class;
+                }
+            }
+        };
         jTable1 = new javax.swing.JTable();
 
         botonAnadirAmigo.setText("Añadir amigo");
@@ -69,17 +92,7 @@ public class VAmigos extends javax.swing.JPanel {
 
         botonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/lupa.png"))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTable1.setModel(modelo);
         jTable1.setTableHeader(null);
         jTable1.setFocusable(false);
         jTable1.setShowHorizontalLines(false);
