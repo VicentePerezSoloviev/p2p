@@ -15,6 +15,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Usuario;
@@ -143,6 +144,7 @@ public class VPrincipal extends javax.swing.JPanel {
 
     /**
      * @param args the command line arguments
+     * @throws java.rmi.NotBoundException
      */
     public static void main(String args[]) throws NotBoundException {
         /* Set the Nimbus look and feel */
@@ -172,8 +174,13 @@ public class VPrincipal extends javax.swing.JPanel {
             portNum = (br.readLine()).trim();
             registryURL = "rmi://localhost:" + portNum + "/mensajeria";
             
+            JFrame frame = new JFrame("P2P");
             VPrincipal graficos = new VPrincipal(registryURL);
-            graficos.setEnabled(true);
+            
+            frame.setSize(231,231);
+            
+            frame.add(graficos);
+            frame.setVisible(true);
             graficos.setVisible(true);
          }
          catch (IOException re) {
