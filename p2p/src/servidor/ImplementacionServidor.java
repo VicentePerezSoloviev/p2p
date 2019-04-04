@@ -17,8 +17,6 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         this.hilo.start();
     }
     
-    
-    
     @Override
     public boolean introducirUsuario (Usuario usuario) throws RemoteException {
         return this.daoUsuario.introducirUsuario(usuario);
