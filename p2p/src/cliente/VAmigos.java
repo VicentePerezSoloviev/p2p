@@ -19,11 +19,13 @@ public class VAmigos extends javax.swing.JPanel {
      * @param usuario
      */
     
-    ImageIcon icono=new ImageIcon(getClass().getResource("/iconos/chat.png"));
+    ImageIcon icono;
     
     public VAmigos(String usuario) {
                 
+        icono=new ImageIcon(this.getClass().getResource("/iconos/chat.png"));
         initComponents();
+        System.out.println(icono.toString());
         this.nombreUsuario.setText(usuario);
     }
 
@@ -39,7 +41,7 @@ public class VAmigos extends javax.swing.JPanel {
         botonAnadirAmigo = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         nombreUsuario = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        circuloConectado = new javax.swing.JButton();
         botonPeticiones = new javax.swing.JButton();
         botonBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -75,14 +77,13 @@ public class VAmigos extends javax.swing.JPanel {
         nombreUsuario.setForeground(new java.awt.Color(0, 153, 0));
         nombreUsuario.setText("nombreUsuario");
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/circuloVerde.png"))); // NOI18N
-        jButton2.setBorder(null);
-        jButton2.setBorderPainted(false);
-        jButton2.setContentAreaFilled(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jButton2.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
-        jButton2.setFocusPainted(false);
-        jButton2.setFocusable(false);
+        circuloConectado.setBorder(null);
+        circuloConectado.setBorderPainted(false);
+        circuloConectado.setContentAreaFilled(false);
+        circuloConectado.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        circuloConectado.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        circuloConectado.setFocusPainted(false);
+        circuloConectado.setFocusable(false);
 
         botonPeticiones.setText("Peticiones de amistad");
         botonPeticiones.addActionListener(new java.awt.event.ActionListener() {
@@ -108,20 +109,19 @@ public class VAmigos extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(botonAnadirAmigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(nombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(botonPeticiones, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(botonAnadirAmigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(circuloConectado, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botonPeticiones, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -130,7 +130,7 @@ public class VAmigos extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(circuloConectado, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addComponent(nombreUsuario))
@@ -167,8 +167,8 @@ public class VAmigos extends javax.swing.JPanel {
     private javax.swing.JButton botonAnadirAmigo;
     private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonPeticiones;
+    private javax.swing.JButton circuloConectado;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
