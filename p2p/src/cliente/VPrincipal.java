@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import modelo.Usuario;
 import servidor.InterfazServidor;
 
@@ -130,7 +131,13 @@ public class VPrincipal extends javax.swing.JPanel {
         try {
             if(servidor.iniciarSesion(usuario)){
                 VAmigos graficos = new VAmigos(usuario.getNombreUsuario());
+                JFrame frame = new JFrame("P2P");
+                frame.add(graficos);
+                frame.setVisible(true);
+                frame.revalidate();
+                frame.pack();
                 graficos.setVisible(true);
+                SwingUtilities.getWindowAncestor(this).dispose();
             }
             else{
                 this.contra.setText("");
@@ -176,12 +183,15 @@ public class VPrincipal extends javax.swing.JPanel {
             
             JFrame frame = new JFrame("P2P");
             VPrincipal graficos = new VPrincipal(registryURL);
-            
-            frame.setSize(231,231);
-            
+
             frame.add(graficos);
             frame.setVisible(true);
+            
             graficos.setVisible(true);
+                        
+                          frame.revalidate();
+                frame.pack();
+            
          }
          catch (IOException re) {
             System.out.println("Exception in Server.main: " + re);
