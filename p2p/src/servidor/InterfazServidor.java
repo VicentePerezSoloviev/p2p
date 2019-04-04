@@ -66,8 +66,7 @@ public interface InterfazServidor extends Remote {
     /*Responder B si o no
     Actualizar en bbdd*/
     public void responderPeticionAmistad(String emisor, String receptor, boolean respuesta) throws RemoteException;
-    
-    public ArrayList<String> obtenerPeticionesAmistad(String u) throws RemoteException;
+
     
     
     

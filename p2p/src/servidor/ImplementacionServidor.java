@@ -105,9 +105,5 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     public void responderPeticionAmistad(String emisor, String receptor, boolean respuesta) throws RemoteException{
         this.daoUsuario.responder(emisor, receptor, respuesta);
     }
-
-    @Override
-    public ArrayList<String> obtenerPeticionesAmistad(String u) throws RemoteException{
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 }
