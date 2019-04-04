@@ -19,7 +19,7 @@ public class VAmigos extends javax.swing.JPanel {
      * @param usuario
      */
     
-    ImageIcon icono=new ImageIcon(getClass().getResource("./iconos/chat.png"));
+    ImageIcon icono=new ImageIcon(getClass().getResource("/iconos/chat.png"));
     
     public VAmigos(String usuario) {
                 
