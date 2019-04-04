@@ -10,13 +10,13 @@ public class prueba {
         Usuario a = new Usuario ("ei", "quetal");
         Usuario b = new Usuario ("q", "w");
         
-        impl.crearPeticionAmistad("ei", "q");
-        impl.crearPeticionAmistad("vicente", "q");
+//        impl.crearPeticionAmistad("ei", "q");
+//        impl.crearPeticionAmistad("vicente", "q");
+//        
+//        impl.iniciarSesion(a);
+//        impl.iniciarSesion(b);
+//        impl.iniciarSesion(new Usuario("vicente", "password"));
         
-        impl.iniciarSesion(a);
-        impl.iniciarSesion(b);
-        impl.iniciarSesion(new Usuario("vicente", "password"));
-        
-        System.out.println(impl.listarAmigosConectados(b.getNombreUsuario()));
+        System.out.println(impl.listarUsuarios());
   }
 }

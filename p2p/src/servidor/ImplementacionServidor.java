@@ -44,7 +44,10 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         /*Comprobamos si existe el usuario que se pasa por parametro*/
         ArrayList<Usuario> array = this.listarUsuarios();
         
+        System.out.println(array);
+        
         for (Usuario array1 : array) {
+            System.out.println(array1);
             if (array1.getNombreUsuario().equals(u.getNombreUsuario()) && array1.getPassword().equals(u.getPassword())){
                 
                 this.hilo.anadirUsuarioConectado(u);        //anadimos a array de usuarios conectados de hilo

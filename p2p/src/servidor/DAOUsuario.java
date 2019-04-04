@@ -104,7 +104,6 @@ public class DAOUsuario {
             conn = DriverManager.getConnection(url, nombre, passwd);
             st = conn.createStatement();
             rs = st.executeQuery(query);
-            
             while (rs.next()) {
                 name = rs.getString("nombre");
                 password = rs.getString("password");
