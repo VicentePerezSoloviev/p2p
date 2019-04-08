@@ -36,10 +36,28 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     public ArrayList<Usuario> listarUsuarios () throws RemoteException{
         return this.daoUsuario.listarUsuarios();
     }
+    
+    @Override
+    public ArrayList<String> listarUsuariosString () throws RemoteException{
+        ArrayList<String> array = new ArrayList<>();
+        for (Usuario u: this.daoUsuario.listarUsuarios()) {
+            array.add(u.getNombreUsuario());
+        }
+        return array;
+    }
 
     @Override
     public boolean iniciarSesion(Usuario u) throws RemoteException{
+        /*Comprobamos si el usuario ya esta en linea*/
+        
+        for (Usuario s: this.hilo.getListaUsuariosConectados()){
+            if (s.getNombreUsuario().equals(u.getNombreUsuario())){
+                System.out.println("El usuario ya esta en linea");
+                return false;
+            }
+        }
         /*Comprobamos si existe el usuario que se pasa por parametro*/
+        
         ArrayList<Usuario> array = this.listarUsuarios();
                 
         for (Usuario array1 : array) {

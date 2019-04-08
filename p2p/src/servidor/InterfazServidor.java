@@ -68,6 +68,7 @@ public interface InterfazServidor extends Remote {
     public void responderPeticionAmistad(String emisor, String receptor, boolean respuesta) throws RemoteException;
 
     
+    public ArrayList<String> listarUsuariosString () throws RemoteException;
     
     
     

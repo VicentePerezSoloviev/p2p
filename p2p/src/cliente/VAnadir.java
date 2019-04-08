@@ -5,6 +5,11 @@
  */
 package cliente;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import servidor.InterfazServidor;
+
 /**
  *
  * @author Usuario
@@ -15,11 +20,24 @@ public class VAnadir extends javax.swing.JPanel {
      * Creates new form VAnadir
      */
     
-    private String usuario;
+    private final String usuario;
+    private final ImageIcon iconoMas;
     
-    public VAnadir(String usuario) {
+    
+    ArrayList<String> arrayUsuarios;
+    
+    
+    
+    public VAnadir(InterfazServidor servidor, String usuario) throws RemoteException {
         this.usuario=usuario;
+        arrayUsuarios = servidor.listarUsuariosString();
+        iconoMas=new ImageIcon(this.getClass().getResource("/iconos/anadir.jpg"));
+        
         initComponents();
+        
+        ModeloTablaAmigos m;
+        m = (ModeloTablaAmigos) this.jTable1.getModel();
+        
     }
 
     /**
@@ -41,20 +59,11 @@ public class VAnadir extends javax.swing.JPanel {
 
         botonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/lupa.png"))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTable1.setModel(new ModeloTablaAmigos(arrayUsuarios,iconoMas));
         jTable1.setFocusable(false);
         jTable1.setShowHorizontalLines(false);
         jTable1.setShowVerticalLines(false);
+        jTable1.setTableHeader(null);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
