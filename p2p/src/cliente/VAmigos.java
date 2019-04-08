@@ -170,7 +170,12 @@ public class VAmigos extends javax.swing.JPanel {
     }//GEN-LAST:event_botonPeticionesActionPerformed
 
     private void botonAnadirAmigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnadirAmigoActionPerformed
-        VAnadir graficos = new VAnadir(this.nombreUsuario.getText());
+        VAnadir graficos = null;
+        try {
+            graficos = new VAnadir(servidor,this.nombreUsuario.getText());
+        } catch (RemoteException ex) {
+            Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         JFrame frame = new JFrame("P2P");
         frame.add(graficos);
         frame.setVisible(true);
