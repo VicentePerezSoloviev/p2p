@@ -10,40 +10,41 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class Servidor {
-    
+
+    private static String nombreHost = "localhost";
+    private static int puerto = 1099;
     
     public static void main(String[] args) throws IOException, RemoteException{
-        int numPuerto;
-        String url, nombreHost;
-
+        String url;
+        
         try {
             InputStreamReader is = new InputStreamReader(System.in);
             BufferedReader br = new BufferedReader(is);
 
-            //Solicitamos nombre de host de RMIRegistry
-            System.out.println("¿Nombre de host de RMIRegistry? ");
-            if (args.length == 0) { //leer por cmd
-                nombreHost = br.readLine();
-            } else { //argumento
-                nombreHost = args[0];
-                System.out.println(nombreHost);
-            }
-
-            //Solicitamos numero de puerto de RMIRegistry
-            System.out.println("\n¿Numero de puerto de RMIRegistry? ");
-            if (args.length <= 1) { //leer por cmd
-                numPuerto = Integer.parseInt(br.readLine());
-            } else { //argumento
-                numPuerto = Integer.parseInt(args[1]);
-                System.out.println(numPuerto);
-            }
+//            //Solicitamos nombre de host de RMIRegistry
+//            System.out.println("¿Nombre de host de RMIRegistry? ");
+//            if (args.length == 0) { //leer por cmd
+//                nombreHost = br.readLine();
+//            } else { //argumento
+//                nombreHost = args[0];
+//                System.out.println(nombreHost);
+//            }
+//
+//            //Solicitamos numero de puerto de RMIRegistry
+//            System.out.println("\n¿Numero de puerto de RMIRegistry? ");
+//            if (args.length <= 1) { //leer por cmd
+//                numPuerto = Integer.parseInt(br.readLine());
+//            } else { //argumento
+//                numPuerto = Integer.parseInt(args[1]);
+//                System.out.println(numPuerto);
+//            }
 
             /*Activamos RMI en el puerto que se espera. Si no esta creado lo creamos*/
-            startRegistry(numPuerto);
+            startRegistry(Servidor.puerto);
             
             ImplementacionServidor objetoExportar = new ImplementacionServidor();      //funcion para calcular pi
             
-            url = "rmi://" + nombreHost + ":" + numPuerto + "/mensajeria";      //creo URL
+            url = "rmi://" + Servidor.nombreHost + ":" + Servidor.puerto + "/mensajeria";      //creo URL
             
             //Conecta con RMIRegistry en este ordenador y le avisa que exportedObj debe publicarse al exterior
             Naming.rebind(url, objetoExportar);

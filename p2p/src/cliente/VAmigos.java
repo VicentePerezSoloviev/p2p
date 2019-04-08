@@ -8,6 +8,8 @@ package cliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -45,7 +47,7 @@ public class VAmigos extends javax.swing.JPanel {
         initComponents();
         this.nombreUsuario.setText(usuario);
         ModeloTablaAmigos modelo = (ModeloTablaAmigos) this.tablaAmigos.getModel();
-        modelo.setFilas(amigos);
+        //modelo.setFilas(amigos);
         
             JPopupMenu menu = new JPopupMenu();
         JMenuItem opcion1 = new JMenuItem("Cambiar contraseña");
@@ -84,6 +86,23 @@ public class VAmigos extends javax.swing.JPanel {
                         menu.show(botonOpciones, botonOpciones.getWidth()/2, botonOpciones.getHeight()/2);
                     }
                 } );
+        
+        new Thread(){
+                @Override
+                public void run(){
+                    while(true){
+                            try {
+                                sleep(5);
+                                amigos=servidor.listarAmigosConectados(usuario);
+                            } catch (IOException | InterruptedException ex) {
+                                Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            modelo.limpiarTabla();
+                            modelo.setFilas(amigos);
+                            modelo.fireTableDataChanged();
+                    }
+                }
+            }.start();
         
     }
 
