@@ -35,6 +35,8 @@ public class VPeticiones extends javax.swing.JPanel {
         iconoAceptar=new ImageIcon(this.getClass().getResource("/iconos/aceptar.png"));
         iconoRechazar=new ImageIcon(this.getClass().getResource("/iconos/rechazar.png"));
         initComponents();
+        ModeloTablaPeticiones modelo = (ModeloTablaPeticiones) this.tablaPeticiones.getModel();
+        modelo.setFilas(peticiones);
     }
 
     /**

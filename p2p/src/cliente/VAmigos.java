@@ -5,12 +5,19 @@
  */
 package cliente;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 import servidor.InterfazServidor;
 
@@ -36,11 +43,48 @@ public class VAmigos extends javax.swing.JPanel {
         this.servidor=servidor;
         icono=new ImageIcon(this.getClass().getResource("/iconos/chat.png"));
         initComponents();
-        System.out.println(icono.toString());
         this.nombreUsuario.setText(usuario);
-        System.out.println(amigos);
         ModeloTablaAmigos modelo = (ModeloTablaAmigos) this.tablaAmigos.getModel();
         modelo.setFilas(amigos);
+        
+            JPopupMenu menu = new JPopupMenu();
+        JMenuItem opcion1 = new JMenuItem("Cambiar contraseña");
+        
+        opcion1.addActionListener((ActionEvent a) -> {
+            try {
+                VOpciones graficos = new VOpciones(usuario);
+                JFrame frame = new JFrame("P2P");
+                frame.add(graficos);
+                frame.setVisible(true);
+                frame.revalidate();
+                frame.pack();
+                graficos.setVisible(true);
+            } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+                Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                });
+        
+        
+        JMenuItem opcion2 = new JMenuItem("Cerrar Sesión");
+        
+                opcion2.addActionListener((ActionEvent a) -> {
+                    try {
+                        servidor.cerrarSesion(usuario);
+                        System.exit(1);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+        
+        menu.add(opcion1); menu.add(opcion2);      
+        
+        this.botonOpciones.addActionListener( new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        menu.show(botonOpciones, botonOpciones.getWidth()/2, botonOpciones.getHeight()/2);
+                    }
+                } );
+        
     }
 
     /**
@@ -60,7 +104,7 @@ public class VAmigos extends javax.swing.JPanel {
         botonBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAmigos = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        botonOpciones = new javax.swing.JButton();
 
         botonAnadirAmigo.setText("Añadir amigo");
         botonAnadirAmigo.addActionListener(new java.awt.event.ActionListener() {
@@ -101,7 +145,12 @@ public class VAmigos extends javax.swing.JPanel {
         tablaAmigos.setTableHeader(null);
         jScrollPane1.setViewportView(tablaAmigos);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/opciones.png"))); // NOI18N
+        botonOpciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/opciones.png"))); // NOI18N
+        botonOpciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonOpcionesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -123,7 +172,7 @@ public class VAmigos extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(botonPeticiones, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(botonOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -140,7 +189,7 @@ public class VAmigos extends javax.swing.JPanel {
                             .addComponent(botonPeticiones, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(botonOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(botonAnadirAmigo)
                 .addGap(18, 18, 18)
@@ -179,13 +228,17 @@ public class VAmigos extends javax.swing.JPanel {
         graficos.setVisible(true);
     }//GEN-LAST:event_botonAnadirAmigoActionPerformed
 
+    private void botonOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOpcionesActionPerformed
+ 
+    }//GEN-LAST:event_botonOpcionesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAnadirAmigo;
     private javax.swing.JButton botonBuscar;
+    private javax.swing.JButton botonOpciones;
     private javax.swing.JButton botonPeticiones;
     private javax.swing.JButton circuloConectado;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel nombreUsuario;
