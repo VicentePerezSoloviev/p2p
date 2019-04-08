@@ -39,7 +39,16 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
 
     @Override
     public boolean iniciarSesion(Usuario u) throws RemoteException{
+        /*Comprobamos si el usuario ya esta en linea*/
+        
+        for (Usuario s: this.hilo.getListaUsuariosConectados()){
+            if (s.getNombreUsuario().equals(u.getNombreUsuario())){
+                System.out.println("El usuario ya esta en linea");
+                return false;
+            }
+        }
         /*Comprobamos si existe el usuario que se pasa por parametro*/
+        
         ArrayList<Usuario> array = this.listarUsuarios();
                 
         for (Usuario array1 : array) {
