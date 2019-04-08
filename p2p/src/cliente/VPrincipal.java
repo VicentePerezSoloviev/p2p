@@ -6,6 +6,7 @@
 package cliente;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,12 +31,14 @@ public class VPrincipal extends javax.swing.JPanel {
 
     private InterfazServidor servidor;
     private final InterfazCliente cliente;
+    boolean flagNombre,flagContra;
     
     public VPrincipal(String url) throws NotBoundException, MalformedURLException, RemoteException {
         servidor = (InterfazServidor) Naming.lookup(url);
         System.out.println("Lookup completado.");
         cliente = new ImplementacionCliente();
-        
+        flagNombre=false;
+        flagContra=false;
         initComponents();
     }
 
@@ -58,9 +61,19 @@ public class VPrincipal extends javax.swing.JPanel {
         jLabel1.setText("LOGIN");
 
         nombreUsuario.setText("Nombre de usuario");
+        nombreUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nombreUsuarioMouseClicked(evt);
+            }
+        });
         nombreUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nombreUsuarioActionPerformed(evt);
+            }
+        });
+        nombreUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombreUsuarioKeyPressed(evt);
             }
         });
 
@@ -79,6 +92,16 @@ public class VPrincipal extends javax.swing.JPanel {
         });
 
         contra.setText("contraseña");
+        contra.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                contraMouseClicked(evt);
+            }
+        });
+        contra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                contraKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -130,7 +153,7 @@ public class VPrincipal extends javax.swing.JPanel {
         Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
         try {
             if(servidor.iniciarSesion(usuario)){
-                VAmigos graficos = new VAmigos(usuario.getNombreUsuario());
+                VAmigos graficos = new VAmigos(this.servidor,usuario.getNombreUsuario());
                 JFrame frame = new JFrame("P2P");
                 frame.add(graficos);
                 frame.setVisible(true);
@@ -148,6 +171,42 @@ public class VPrincipal extends javax.swing.JPanel {
             Logger.getLogger(VPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonIdenficarseActionPerformed
+
+    private void nombreUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nombreUsuarioMouseClicked
+        if(!flagNombre){
+                    this.nombreUsuario.setText("");
+                    flagNombre=true;
+        }
+    }//GEN-LAST:event_nombreUsuarioMouseClicked
+
+    private void contraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contraMouseClicked
+if(!flagContra){
+        this.contra.setText("");
+                            flagContra=true;
+
+}
+    }//GEN-LAST:event_contraMouseClicked
+
+    private void nombreUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreUsuarioKeyPressed
+         if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+             this.botonIdenficarse.doClick();
+   }  
+        
+        if(!flagNombre){
+                    this.nombreUsuario.setText("");
+                                        flagNombre=true;
+
+        }
+    }//GEN-LAST:event_nombreUsuarioKeyPressed
+
+    private void contraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contraKeyPressed
+             if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+             this.botonIdenficarse.doClick();
+   }  
+        if(!flagContra){
+        this.contra.setText("");
+             flagContra=true;
+}    }//GEN-LAST:event_contraKeyPressed
 
     /**
      * @param args the command line arguments
@@ -187,10 +246,9 @@ public class VPrincipal extends javax.swing.JPanel {
             frame.add(graficos);
             frame.setVisible(true);
             
-            graficos.setVisible(true);
-                        
-                          frame.revalidate();
-                frame.pack();
+            graficos.setVisible(true);                      
+            frame.revalidate();
+            frame.pack();
             
          }
          catch (IOException re) {
