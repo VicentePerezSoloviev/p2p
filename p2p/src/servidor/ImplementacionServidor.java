@@ -74,11 +74,25 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     public ArrayList<String> listarAmigosConectados(String u) throws RemoteException{
         ArrayList<String> usuariosConectados = this.listarUsuariosConectados();
         ArrayList<String> amigosUsuario = this.daoUsuario.listarAmigos(u);
+        System.out.println(usuariosConectados);
+        System.out.println(amigosUsuario);
         
-        usuariosConectados.retainAll(amigosUsuario);
+        //usuariosConectados.retainAll(amigosUsuario);
         if (usuariosConectados.contains(u)) usuariosConectados.remove(u);       //nunca se ejecuta??
+        System.out.println(usuariosConectados);
+        ArrayList<String> arrayEliminar = new ArrayList<>();
+        for (String s: amigosUsuario) {
+            if (!usuariosConectados.contains(s)){
+                arrayEliminar.add(s);       //guardo todos los usuarios para eliminar pk no estan conectados
+            }
+        }
+        for (String s: arrayEliminar){
+            amigosUsuario.remove(s);
+        }
+        System.out.println(amigosUsuario);
+        System.out.println(usuariosConectados);
         
-        return usuariosConectados;
+        return amigosUsuario;
     }
 
     @Override
