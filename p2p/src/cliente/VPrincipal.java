@@ -210,9 +210,10 @@ if(!flagContra){
 
     /**
      * @param args the command line arguments
+     * @param p
      * @throws java.rmi.NotBoundException
      */
-    public static void main(String args[]) throws NotBoundException {
+    public static void main(String args[], int portNum) throws NotBoundException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -234,10 +235,11 @@ if(!flagContra){
 
         InputStreamReader is = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(is);
-        String portNum, registryURL;
+        //String portNum, registryURL;
+        String registryURL;
         try{     
             System.out.println("(CLIENTE) Introduzca el nÃºmero de puerto de RMIregistry:");
-            portNum = (br.readLine()).trim();
+            //portNum = (br.readLine()).trim();
             registryURL = "rmi://localhost:" + portNum + "/mensajeria";
             
             JFrame frame = new JFrame("P2P");
