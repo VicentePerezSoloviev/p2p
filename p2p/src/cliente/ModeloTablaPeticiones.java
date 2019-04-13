@@ -62,6 +62,12 @@ public class ModeloTablaPeticiones extends AbstractTableModel{
         return null;
     }
     
+    @Override
+    public Class getColumnClass(int column){
+        if (column == 1 || column ==2) return ImageIcon.class; 
+        return Object.class;
+    }
+    
     public void setFilas(ArrayList<String> peticiones){
         if(!peticiones.isEmpty()){
                     for(int i=0;i<peticiones.size();i++) {
@@ -74,6 +80,10 @@ public class ModeloTablaPeticiones extends AbstractTableModel{
    
     public void limpiarTabla(){
         peticiones.clear();
+    }
+    
+    public String getUsuario(int row){
+        return this.peticiones.get(row);
     }
     
 }

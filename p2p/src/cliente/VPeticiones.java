@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import servidor.InterfazServidor;
 
 /**
@@ -26,6 +30,7 @@ public class VPeticiones extends javax.swing.JPanel {
     private InterfazServidor servidor;
     private ArrayList<String> peticiones;
     private ImageIcon iconoAceptar, iconoRechazar;
+    private ModeloTablaPeticiones modelo;
 
     
     public VPeticiones(InterfazServidor servidor, String usuario) throws RemoteException {
@@ -35,8 +40,10 @@ public class VPeticiones extends javax.swing.JPanel {
         iconoAceptar=new ImageIcon(this.getClass().getResource("/iconos/aceptar.png"));
         iconoRechazar=new ImageIcon(this.getClass().getResource("/iconos/rechazar.png"));
         initComponents();
-        ModeloTablaPeticiones modelo = (ModeloTablaPeticiones) this.tablaPeticiones.getModel();
-        modelo.setFilas(peticiones);
+        modelo = (ModeloTablaPeticiones) this.tablaPeticiones.getModel();
+
+        
+
     }
 
     /**
@@ -52,6 +59,7 @@ public class VPeticiones extends javax.swing.JPanel {
         botonVolver = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPeticiones = new javax.swing.JTable();
+        tablaPeticiones.setModel(new cliente.ModeloTablaPeticiones(peticiones,iconoAceptar,iconoRechazar));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("PETICIONES DE AMISTAD PENDIENTES");
@@ -63,12 +71,21 @@ public class VPeticiones extends javax.swing.JPanel {
             }
         });
 
+        tablaPeticiones.setCellSelectionEnabled(true);
         tablaPeticiones.setFocusable(false);
         tablaPeticiones.setRowHeight(40);
         tablaPeticiones.setRowMargin(5);
         tablaPeticiones.setShowHorizontalLines(false);
         tablaPeticiones.setShowVerticalLines(false);
         tablaPeticiones.setTableHeader(null);
+        tablaPeticiones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tablaPeticionesMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaPeticionesMouseReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaPeticiones);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -106,15 +123,27 @@ public class VPeticiones extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVolverActionPerformed
-        VAmigos graficos;
         try {
-            graficos = new VAmigos(servidor,usuario);
+            VAmigos graficos = new VAmigos(this.servidor,usuario);
+            JFrame frame = new JFrame("P2P");
+            frame.add(graficos);
+            frame.setVisible(true);
+            frame.revalidate();
+            frame.pack();
             graficos.setVisible(true);
+            SwingUtilities.getWindowAncestor(this).dispose();
         } catch (RemoteException ex) {
             Logger.getLogger(VPeticiones.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_botonVolverActionPerformed
+
+    private void tablaPeticionesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPeticionesMousePressed
+    }//GEN-LAST:event_tablaPeticionesMousePressed
+
+    private void tablaPeticionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPeticionesMouseReleased
+            System.out.println("SE HA PULSADO LA PETICION DE "+ modelo.getUsuario(tablaPeticiones.getSelectedRow()));
+    }//GEN-LAST:event_tablaPeticionesMouseReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
