@@ -165,10 +165,13 @@ public class DAOUsuario {
             st = conn.createStatement();
             rs = st.executeQuery(query);
             
-            while (rs.next() && rs!=null) {
+            if(rs!=null){
+                           while (rs.next()) {
                 name = rs.getString("nombreB");
                 array.add(name);
+            } 
             }
+
             
             st.close();
             
@@ -187,11 +190,14 @@ public class DAOUsuario {
             st = conn.createStatement();
             rs = st.executeQuery(query);
             
-            while (rs.next() && rs!=null) {
-                name = rs.getString("nombreA");
-                check = checkifExist(array, name);
-                if (!check) array.add(name);
+            if(rs!=null){
+                while (rs.next()) {
+                    name = rs.getString("nombreA");
+                    check = checkifExist(array, name);
+                    if (!check) array.add(name);
+                }
             }
+
             
             st.close();
             
@@ -234,7 +240,7 @@ public class DAOUsuario {
         
         if (respuesta) {
             a=1;
-            query = "UPDATE AMG_PET SET EST_PET=" + a + " where (nombreA='"+emisor+"' and nombreB='"+receptor+"') or (nombreB='"+receptor+"' and nombreA='"+emisor+"');";
+            query = "UPDATE AMG_PET SET EST_PET=" + a + " where (nombreA='"+emisor+"' and nombreB='"+receptor+"') or (nombreA='"+receptor+"' and nombreB='"+emisor+"');";
         }
         else {
             query = "DELETE FROM AMG_PET WHERE (nombreA = '" + emisor + "' and nombreB = '" + receptor + "') or (nombreB='"+emisor+"' and nombreA='"+receptor+"');";

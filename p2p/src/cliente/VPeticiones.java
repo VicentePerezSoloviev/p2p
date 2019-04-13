@@ -143,23 +143,30 @@ public class VPeticiones extends javax.swing.JPanel {
     }//GEN-LAST:event_tablaPeticionesMousePressed
 
     private void tablaPeticionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPeticionesMouseReleased
+        boolean flagUpdate = false;
         try {
             switch (tablaPeticiones.getSelectedColumn()) {
                 case 1:
                     servidor.responderPeticionAmistad(modelo.getUsuario(tablaPeticiones.getSelectedRow()), usuario, true);
+                    flagUpdate = true;
                     break;
                 case 2:
                     servidor.responderPeticionAmistad(modelo.getUsuario(tablaPeticiones.getSelectedRow()), usuario, false);
+                    flagUpdate = true;
                     break;
                 default:
                     String emisor = modelo.getUsuario(tablaPeticiones.getSelectedRow());
-                    int input = JOptionPane.showConfirmDialog(null, "Do you like bacon?");
+                    int input = JOptionPane.showConfirmDialog(null, "Quieres aceptar a " + emisor  + " como amig@?");
                     switch (input){
                         case 0:
                             servidor.responderPeticionAmistad(emisor, usuario, true);
+                                                flagUpdate = true;
+
                             break;
                         case 1:
                             servidor.responderPeticionAmistad(emisor, usuario, false);
+                                                flagUpdate = true;
+
                             break;
                         case 2:
                             break;
@@ -167,6 +174,17 @@ public class VPeticiones extends javax.swing.JPanel {
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VPeticiones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(flagUpdate){
+            try {
+                peticiones=this.servidor.listarPeticionesPendientes(usuario);
+            } catch (RemoteException ex) {
+                Logger.getLogger(VPeticiones.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            modelo.limpiarTabla();
+            modelo.setFilas(peticiones);
+            modelo.fireTableDataChanged();
         }
     }//GEN-LAST:event_tablaPeticionesMouseReleased
 
