@@ -22,8 +22,10 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         return this.daoUsuario.introducirUsuario(usuario);
     }
     
+    
+    
     @Override
-    public Usuario cambiarContrasena (Usuario usuario, String nuevaContrasena) throws RemoteException{
+    public boolean cambiarContrasena (Usuario usuario, String nuevaContrasena) throws RemoteException{
         return this.daoUsuario.cambiarContrasena(usuario, nuevaContrasena);
     }
     
@@ -134,6 +136,11 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     @Override
     public void responderPeticionAmistad(String emisor, String receptor, boolean respuesta) throws RemoteException{
         this.daoUsuario.responder(emisor, receptor, respuesta);
+    }
+
+    @Override
+    public String obtenerContra(String usuario) {
+        return this.daoUsuario.obtenerPassword(usuario);
     }
     
 }

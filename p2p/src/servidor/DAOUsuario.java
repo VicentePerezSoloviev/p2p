@@ -41,11 +41,11 @@ public class DAOUsuario {
     }
 
     @SuppressWarnings("null")
-    public Usuario cambiarContrasena(Usuario usuario, String nueva_contrasena) {
+    public boolean cambiarContrasena(Usuario usuario, String nueva_contrasena) {
         String query = "UPDATE usuarios SET password='" + nueva_contrasena + "' WHERE nombre='" + usuario.getNombreUsuario() + "'";
         boolean resultado=false;
         
-        if (usuario == null) return null;       //el usuario no es valido
+        if (usuario == null) return false;       //el usuario no es valido
         
         try {
             ejecutarSentencia(query);
@@ -53,14 +53,14 @@ public class DAOUsuario {
             
             /*Modificamos la contrasena del usuario para devolverlo corregido*/
             usuario.setPassword(nueva_contrasena);
-            return usuario;
+            return true;
           }
           catch (SQLException e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
           }
         
-        return null;
+        return false;
     }
 
     @SuppressWarnings("null")
@@ -254,6 +254,30 @@ public class DAOUsuario {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
           }
+    }
+
+    public String obtenerPassword(String usuario) {
+        String password = null;
+        String query = "SELECT password FROM usuarios WHERE nombre='" + usuario + "';";
+        
+        /*Cogemos todos los amigos cuando usuario es el nombreA*/
+        
+        try {
+            conn = DriverManager.getConnection(url, nombre, passwd);
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            
+            if (rs.next()) password = rs.getString("nombre");
+            
+            st.close();
+            return password;
+            
+        }catch (SQLException e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+        
+        return null;
     }
     
 }
