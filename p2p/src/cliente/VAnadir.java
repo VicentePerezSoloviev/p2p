@@ -7,7 +7,10 @@ package cliente;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import servidor.InterfazServidor;
 
 /**
@@ -22,21 +25,24 @@ public class VAnadir extends javax.swing.JPanel {
     
     private final String usuario;
     private final ImageIcon iconoMas;
-    
+    private InterfazServidor servidor;
     
     ArrayList<String> arrayUsuarios;
+    
+    ModeloTablaAmigos modelo;
     
     
     
     public VAnadir(InterfazServidor servidor, String usuario) throws RemoteException {
+        
+        this.servidor = servidor;
         this.usuario=usuario;
         arrayUsuarios = servidor.listarUsuariosString();
         iconoMas=new ImageIcon(this.getClass().getResource("/iconos/anadir.jpg"));
         
         initComponents();
         
-        ModeloTablaAmigos m;
-        m = (ModeloTablaAmigos) this.jTable1.getModel();
+        modelo = (ModeloTablaAmigos) this.tablaUsuarios.getModel();
         
     }
 
@@ -52,19 +58,25 @@ public class VAnadir extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         botonBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaUsuarios = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
         jTextField1.setText("Nombre de usuario");
 
         botonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/lupa.png"))); // NOI18N
 
-        jTable1.setModel(new ModeloTablaAmigos(arrayUsuarios,iconoMas));
-        jTable1.setFocusable(false);
-        jTable1.setShowHorizontalLines(false);
-        jTable1.setShowVerticalLines(false);
-        jTable1.setTableHeader(null);
-        jScrollPane1.setViewportView(jTable1);
+        tablaUsuarios.setModel(new ModeloTablaAmigos(arrayUsuarios,iconoMas));
+        tablaUsuarios.setFocusable(false);
+        tablaUsuarios.setRowHeight(30);
+        tablaUsuarios.setShowHorizontalLines(false);
+        tablaUsuarios.setShowVerticalLines(false);
+        tablaUsuarios.setTableHeader(null);
+        tablaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaUsuariosMouseReleased(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaUsuarios);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Añadir amigo");
@@ -102,12 +114,21 @@ public class VAnadir extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tablaUsuariosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseReleased
+
+        try {
+            servidor.crearPeticionAmistad(usuario,modelo.getUsuario(tablaUsuarios.getSelectedRow()));
+        } catch (RemoteException ex) {
+            Logger.getLogger(VAnadir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_tablaUsuariosMouseReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tablaUsuarios;
     // End of variables declaration//GEN-END:variables
 }

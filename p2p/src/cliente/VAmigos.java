@@ -53,17 +53,14 @@ public class VAmigos extends javax.swing.JPanel {
         JMenuItem opcion1 = new JMenuItem("Cambiar contraseña");
         
         opcion1.addActionListener((ActionEvent a) -> {
-            try {
-                VOpciones graficos = new VOpciones(usuario);
-                JFrame frame = new JFrame("P2P");
-                frame.add(graficos);
-                frame.setVisible(true);
-                frame.revalidate();
-                frame.pack();
-                graficos.setVisible(true);
-            } catch (NotBoundException | MalformedURLException | RemoteException ex) {
-                Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            VOpciones graficos = new VOpciones(usuario);
+            JFrame frame = new JFrame("P2P");
+            frame.add(graficos);
+            frame.setVisible(true);
+            frame.revalidate();
+            frame.pack();
+            graficos.setVisible(true);
+                SwingUtilities.getWindowAncestor(this).dispose();
                 });
         
         
@@ -92,8 +89,9 @@ public class VAmigos extends javax.swing.JPanel {
                 public void run(){
                     while(true){
                             try {
-                                sleep(5);
+                                sleep(5000);
                                 synchronized(amigos){
+                                    System.out.println("LISTANDO AMIGOS DE: " + usuario);
                                     amigos=servidor.listarAmigosConectados(usuario);
                                 }                                
                             } catch (IOException | InterruptedException ex) {

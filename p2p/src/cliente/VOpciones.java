@@ -5,21 +5,10 @@
  */
 package cliente;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import modelo.Usuario;
 import servidor.InterfazServidor;
 
@@ -30,15 +19,13 @@ import servidor.InterfazServidor;
 public class VOpciones extends javax.swing.JPanel {
 
     private InterfazServidor servidor;
-    private final InterfazCliente cliente;
     boolean flagNombre,flagContra;
+    Usuario usuario;
     
-    public VOpciones(String url) throws NotBoundException, MalformedURLException, RemoteException {
-        servidor = (InterfazServidor) Naming.lookup(url);
-        System.out.println("Lookup completado.");
-        cliente = new ImplementacionCliente();
-        flagNombre=false;
-        flagContra=false;
+    public VOpciones(String usuario){
+        this.usuario=new Usuario(usuario, this.servidor.obtenerContra(usuario));
+        this.nombreUsuario.setText(usuario);
+        this.contra.setText(this.usuario.getPassword());
         initComponents();
     }
 
@@ -53,8 +40,8 @@ public class VOpciones extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         nombreUsuario = new javax.swing.JTextField();
-        botonIdenficarse = new javax.swing.JButton();
-        botonRegistrarse = new javax.swing.JButton();
+        botonConfirmar = new javax.swing.JButton();
+        botonCancelar = new javax.swing.JButton();
         contra = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -62,6 +49,7 @@ public class VOpciones extends javax.swing.JPanel {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Opciones");
 
+        nombreUsuario.setEditable(false);
         nombreUsuario.setText("Nombre de usuario");
         nombreUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -79,17 +67,17 @@ public class VOpciones extends javax.swing.JPanel {
             }
         });
 
-        botonIdenficarse.setText("Confirmar");
-        botonIdenficarse.addActionListener(new java.awt.event.ActionListener() {
+        botonConfirmar.setText("Confirmar");
+        botonConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonIdenficarseActionPerformed(evt);
+                botonConfirmarActionPerformed(evt);
             }
         });
 
-        botonRegistrarse.setText("Cancelar");
-        botonRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+        botonCancelar.setText("Cancelar");
+        botonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonRegistrarseActionPerformed(evt);
+                botonCancelarActionPerformed(evt);
             }
         });
 
@@ -97,6 +85,11 @@ public class VOpciones extends javax.swing.JPanel {
         contra.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 contraMouseClicked(evt);
+            }
+        });
+        contra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contraActionPerformed(evt);
             }
         });
         contra.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -123,9 +116,9 @@ public class VOpciones extends javax.swing.JPanel {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(botonRegistrarse)
+                        .addComponent(botonCancelar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botonIdenficarse))
+                        .addComponent(botonConfirmar))
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -144,8 +137,8 @@ public class VOpciones extends javax.swing.JPanel {
                 .addComponent(contra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(botonIdenficarse, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
-                    .addComponent(botonRegistrarse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(botonConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                    .addComponent(botonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -154,73 +147,40 @@ public class VOpciones extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_nombreUsuarioActionPerformed
 
-    private void botonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarseActionPerformed
-        Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
-        try {
-            servidor.introducirUsuario(usuario);
-        } catch (RemoteException ex) {
-            Logger.getLogger(VOpciones.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_botonRegistrarseActionPerformed
+    private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
+        
+    }//GEN-LAST:event_botonCancelarActionPerformed
 
-    private void botonIdenficarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIdenficarseActionPerformed
-        Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
+    private void botonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConfirmarActionPerformed
         try {
-            if(servidor.iniciarSesion(usuario)){
-                VAmigos graficos = new VAmigos(this.servidor,usuario.getNombreUsuario());
-                JFrame frame = new JFrame("P2P");
-                frame.add(graficos);
-                frame.setVisible(true);
-                frame.revalidate();
-                frame.pack();
-                graficos.setVisible(true);
-                SwingUtilities.getWindowAncestor(this).dispose();
-            }
-            else{
-                this.contra.setText("");
-                this.nombreUsuario.setBackground(Color.red);
-                JOptionPane.showMessageDialog(new JPanel(), "Usuario o contraseña incorrectos", "Error de autentificación", JOptionPane.ERROR_MESSAGE);
-            }
+            servidor.cambiarContrasena(usuario, this.contra.getText());
         } catch (RemoteException ex) {
             Logger.getLogger(VOpciones.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_botonIdenficarseActionPerformed
+    }//GEN-LAST:event_botonConfirmarActionPerformed
 
     private void nombreUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nombreUsuarioMouseClicked
-        if(!flagNombre){
-                    this.nombreUsuario.setText("");
-                    flagNombre=true;
-        }
+
     }//GEN-LAST:event_nombreUsuarioMouseClicked
 
     private void contraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contraMouseClicked
-if(!flagContra){
-        this.contra.setText("");
-                            flagContra=true;
-
-}
     }//GEN-LAST:event_contraMouseClicked
 
     private void nombreUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreUsuarioKeyPressed
-         if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
-             this.botonIdenficarse.doClick();
-   }  
-        
-        if(!flagNombre){
-                    this.nombreUsuario.setText("");
-                                        flagNombre=true;
-
-        }
     }//GEN-LAST:event_nombreUsuarioKeyPressed
 
     private void contraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contraKeyPressed
              if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
-             this.botonIdenficarse.doClick();
+             this.botonConfirmar.doClick();
    }  
         if(!flagContra){
         this.contra.setText("");
              flagContra=true;
 }    }//GEN-LAST:event_contraKeyPressed
+
+    private void contraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_contraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -228,8 +188,8 @@ if(!flagContra){
      */
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonIdenficarse;
-    private javax.swing.JButton botonRegistrarse;
+    private javax.swing.JButton botonCancelar;
+    private javax.swing.JButton botonConfirmar;
     private javax.swing.JPasswordField contra;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

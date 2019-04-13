@@ -24,9 +24,9 @@
                   <Component id="jLabel1" max="32767" attributes="0"/>
                   <Component id="nombreUsuario" pref="207" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="botonRegistrarse" min="-2" max="-2" attributes="0"/>
+                      <Component id="botonCancelar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="botonIdenficarse" min="-2" max="-2" attributes="0"/>
+                      <Component id="botonConfirmar" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jLabel3" alignment="1" max="32767" attributes="0"/>
               </Group>
@@ -49,8 +49,8 @@
               <Component id="contra" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="botonIdenficarse" pref="42" max="32767" attributes="0"/>
-                  <Component id="botonRegistrarse" max="32767" attributes="0"/>
+                  <Component id="botonConfirmar" pref="42" max="32767" attributes="0"/>
+                  <Component id="botonCancelar" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -66,6 +66,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="nombreUsuario">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="Nombre de usuario"/>
       </Properties>
       <Events>
@@ -74,20 +75,20 @@
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombreUsuarioKeyPressed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="botonIdenficarse">
+    <Component class="javax.swing.JButton" name="botonConfirmar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Confirmar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonIdenficarseActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonConfirmarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="botonRegistrarse">
+    <Component class="javax.swing.JButton" name="botonCancelar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonRegistrarseActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonCancelarActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="contra">
@@ -96,6 +97,7 @@
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="contraMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="contraActionPerformed"/>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="contraKeyPressed"/>
       </Events>
     </Component>

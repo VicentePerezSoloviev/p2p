@@ -76,5 +76,9 @@ public class ModeloTablaAmigos extends AbstractTableModel{
     public void limpiarTabla(){
         amigos.clear();
     }
+        
+    public String getUsuario(int row){
+        return this.amigos.get(row);
+    }
     
 }
