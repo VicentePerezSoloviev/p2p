@@ -127,7 +127,7 @@ public class DAOUsuario {
     public ArrayList<String> listarPeticiones (String usuario){
         ArrayList<String> array = new ArrayList<>();
         
-        String query = "SELECT nombreB FROM AMG_PET WHERE nombreA='"+usuario+"' AND EST_PET=0;";
+        String query = "SELECT nombreB FROM AMG_PET WHERE nombreB='"+usuario+"' AND EST_PET=0;";
         String name;
         
         /*Cogemos todos los amigos cuando usuario es el nombreA*/
@@ -140,29 +140,6 @@ public class DAOUsuario {
             while (rs.next()) {
                 name = rs.getString("nombreB");
                 array.add(name);
-            }
-            
-            st.close();
-            
-        }catch (SQLException e) {
-            System.err.println("Got an exception!");
-            System.err.println(e.getMessage());
-        }
-        
-        /*Cogemos todos los amigos cuando usuario es el nombreB*/
-        
-        query = "SELECT nombreA FROM AMG_PET WHERE nombreB='"+usuario+"';";
-        boolean check;
-        
-        try {
-            conn = DriverManager.getConnection(url, nombre, passwd);
-            st = conn.createStatement();
-            rs = st.executeQuery(query);
-            
-            while (rs.next()) {
-                name = rs.getString("nombreA");
-                check = checkifExist(array, name);
-                if (!check) array.add(name);
             }
             
             st.close();
@@ -188,7 +165,7 @@ public class DAOUsuario {
             st = conn.createStatement();
             rs = st.executeQuery(query);
             
-            while (rs.next()) {
+            while (rs.next() && rs!=null) {
                 name = rs.getString("nombreB");
                 array.add(name);
             }
@@ -210,7 +187,7 @@ public class DAOUsuario {
             st = conn.createStatement();
             rs = st.executeQuery(query);
             
-            while (rs.next()) {
+            while (rs.next() && rs!=null) {
                 name = rs.getString("nombreA");
                 check = checkifExist(array, name);
                 if (!check) array.add(name);
