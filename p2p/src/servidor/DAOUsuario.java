@@ -253,11 +253,15 @@ public class DAOUsuario {
 
     public void responder(String emisor, String receptor, boolean respuesta) {
         int a;
+        String query;
         
-        if (respuesta) a=1;
-        else a=0;
-        
-        String query = "UPDATE AMG_PET SET EST_PET=" + a + " where (nombreA='"+emisor+"' and nombreB='"+receptor+"') or (nombreB='"+receptor+"' and nombreA='"+emisor+"');";
+        if (respuesta) {
+            a=1;
+            query = "UPDATE AMG_PET SET EST_PET=" + a + " where (nombreA='"+emisor+"' and nombreB='"+receptor+"') or (nombreB='"+receptor+"' and nombreA='"+emisor+"');";
+        }
+        else {
+            query = "DELETE FROM AMG_PET WHERE (nombreA = '" + emisor + "' and nombreB = '" + receptor + "') or (nombreB='"+emisor+"' and nombreA='"+receptor+"');";
+        }
         
         try {
             ejecutarSentencia(query);
