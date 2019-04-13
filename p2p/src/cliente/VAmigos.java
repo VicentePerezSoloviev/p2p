@@ -93,7 +93,9 @@ public class VAmigos extends javax.swing.JPanel {
                     while(true){
                             try {
                                 sleep(5);
-                                amigos=servidor.listarAmigosConectados(usuario);
+                                synchronized(amigos){
+                                    amigos=servidor.listarAmigosConectados(usuario);
+                                }                                
                             } catch (IOException | InterruptedException ex) {
                                 Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
                             }

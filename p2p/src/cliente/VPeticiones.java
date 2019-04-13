@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -142,7 +143,31 @@ public class VPeticiones extends javax.swing.JPanel {
     }//GEN-LAST:event_tablaPeticionesMousePressed
 
     private void tablaPeticionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPeticionesMouseReleased
-            System.out.println("SE HA PULSADO LA PETICION DE "+ modelo.getUsuario(tablaPeticiones.getSelectedRow()));
+        try {
+            switch (tablaPeticiones.getSelectedColumn()) {
+                case 1:
+                    servidor.responderPeticionAmistad(modelo.getUsuario(tablaPeticiones.getSelectedRow()), usuario, true);
+                    break;
+                case 2:
+                    servidor.responderPeticionAmistad(modelo.getUsuario(tablaPeticiones.getSelectedRow()), usuario, false);
+                    break;
+                default:
+                    String emisor = modelo.getUsuario(tablaPeticiones.getSelectedRow());
+                    int input = JOptionPane.showConfirmDialog(null, "Do you like bacon?");
+                    switch (input){
+                        case 0:
+                            servidor.responderPeticionAmistad(emisor, usuario, true);
+                            break;
+                        case 1:
+                            servidor.responderPeticionAmistad(emisor, usuario, false);
+                            break;
+                        case 2:
+                            break;
+                    }   break;
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(VPeticiones.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_tablaPeticionesMouseReleased
 
 
