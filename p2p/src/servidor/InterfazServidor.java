@@ -25,7 +25,7 @@ public interface InterfazServidor extends Remote {
     Devuelve la contraseña acutal del usuario
     -contra en caso exito
     - null en caso de error*/
-    public String obtenerContra (String usuario);
+    public String obtenerContra (String usuario) throws RemoteException;
     
     /*Funcion para eliminar un usuario de la base de datos de usuarios. Se le debe pasar
     el usuario entero.

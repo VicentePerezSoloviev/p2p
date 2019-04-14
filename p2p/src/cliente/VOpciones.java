@@ -22,11 +22,12 @@ public class VOpciones extends javax.swing.JPanel {
     boolean flagNombre,flagContra;
     Usuario usuario;
     
-    public VOpciones(String usuario){
+    public VOpciones(InterfazServidor servidor, String usuario) throws RemoteException{
+        this.servidor = servidor;
         this.usuario=new Usuario(usuario, this.servidor.obtenerContra(usuario));
-        this.nombreUsuario.setText(usuario);
+                initComponents();
+        this.nombreUsuario.setText(this.usuario.getNombreUsuario());
         this.contra.setText(this.usuario.getPassword());
-        initComponents();
     }
 
     /**
@@ -51,21 +52,6 @@ public class VOpciones extends javax.swing.JPanel {
 
         nombreUsuario.setEditable(false);
         nombreUsuario.setText("Nombre de usuario");
-        nombreUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                nombreUsuarioMouseClicked(evt);
-            }
-        });
-        nombreUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nombreUsuarioActionPerformed(evt);
-            }
-        });
-        nombreUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                nombreUsuarioKeyPressed(evt);
-            }
-        });
 
         botonConfirmar.setText("Confirmar");
         botonConfirmar.addActionListener(new java.awt.event.ActionListener() {
@@ -82,16 +68,6 @@ public class VOpciones extends javax.swing.JPanel {
         });
 
         contra.setText("contraseña");
-        contra.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                contraMouseClicked(evt);
-            }
-        });
-        contra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contraActionPerformed(evt);
-            }
-        });
         contra.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 contraKeyPressed(evt);
@@ -143,10 +119,6 @@ public class VOpciones extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nombreUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nombreUsuarioActionPerformed
-
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
         
     }//GEN-LAST:event_botonCancelarActionPerformed
@@ -159,16 +131,6 @@ public class VOpciones extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_botonConfirmarActionPerformed
 
-    private void nombreUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nombreUsuarioMouseClicked
-
-    }//GEN-LAST:event_nombreUsuarioMouseClicked
-
-    private void contraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contraMouseClicked
-    }//GEN-LAST:event_contraMouseClicked
-
-    private void nombreUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreUsuarioKeyPressed
-    }//GEN-LAST:event_nombreUsuarioKeyPressed
-
     private void contraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contraKeyPressed
              if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
              this.botonConfirmar.doClick();
@@ -177,10 +139,6 @@ public class VOpciones extends javax.swing.JPanel {
         this.contra.setText("");
              flagContra=true;
 }    }//GEN-LAST:event_contraKeyPressed
-
-    private void contraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contraActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_contraActionPerformed
 
     /**
      * @param args the command line arguments

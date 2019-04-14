@@ -139,7 +139,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     }
 
     @Override
-    public String obtenerContra(String usuario) {
+    public String obtenerContra(String usuario) throws RemoteException{
         return this.daoUsuario.obtenerPassword(usuario);
     }
     

@@ -11,10 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import servidor.InterfazServidor;
 
 /**
@@ -42,11 +41,26 @@ public class VPeticiones extends javax.swing.JPanel {
         iconoRechazar=new ImageIcon(this.getClass().getResource("/iconos/rechazar.png"));
         initComponents();
         modelo = (ModeloTablaPeticiones) this.tablaPeticiones.getModel();
-
-        
-
+        comprobarPeticiones();
     }
 
+    private boolean comprobarPeticiones(){
+        if(this.peticiones.isEmpty()){
+            this.remove(this.tablaPeticiones);
+            this.add(new JLabel("No hay peticiones pendientes"));
+        }
+        else{
+             tablaPeticiones = new javax.swing.JTable();
+             tablaPeticiones.setModel(new cliente.ModeloTablaPeticiones(peticiones,iconoAceptar,iconoRechazar));
+             modelo = (ModeloTablaPeticiones) this.tablaPeticiones.getModel();
+             this.add(tablaPeticiones);
+             return true;
+        }
+        this.revalidate();
+        this.repaint();
+        return false;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,14 +70,10 @@ public class VPeticiones extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         botonVolver = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPeticiones = new javax.swing.JTable();
         tablaPeticiones.setModel(new cliente.ModeloTablaPeticiones(peticiones,iconoAceptar,iconoRechazar));
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("PETICIONES DE AMISTAD PENDIENTES");
 
         botonVolver.setText("Volver");
         botonVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -96,30 +106,20 @@ public class VPeticiones extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(botonVolver)))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(235, 235, 235)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(botonVolver)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(56, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(56, 56, 56)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -144,6 +144,7 @@ public class VPeticiones extends javax.swing.JPanel {
 
     private void tablaPeticionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPeticionesMouseReleased
         boolean flagUpdate = false;
+        if(tablaPeticiones.getSelectedRow()!=-1){
         try {
             switch (tablaPeticiones.getSelectedColumn()) {
                 case 1:
@@ -183,15 +184,17 @@ public class VPeticiones extends javax.swing.JPanel {
                 Logger.getLogger(VPeticiones.class.getName()).log(Level.SEVERE, null, ex);
             }
             modelo.limpiarTabla();
-            modelo.setFilas(peticiones);
-            modelo.fireTableDataChanged();
+            if(comprobarPeticiones()){
+                modelo.setFilas(peticiones);
+                modelo.fireTableDataChanged();
+            }
+        }
         }
     }//GEN-LAST:event_tablaPeticionesMouseReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonVolver;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaPeticiones;
     // End of variables declaration//GEN-END:variables

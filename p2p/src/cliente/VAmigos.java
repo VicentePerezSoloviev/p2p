@@ -22,6 +22,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import modelo.Usuario;
 import servidor.InterfazServidor;
 
 /**
@@ -38,29 +39,35 @@ public class VAmigos extends javax.swing.JPanel {
     private ImageIcon icono;
     private InterfazServidor servidor;
     private ArrayList<String> amigos;
+    ModeloTablaAmigos modelo;
+    String usuario;
 
     
     public VAmigos(InterfazServidor servidor,String usuario) throws RemoteException {
                 amigos = servidor.listarAmigosConectados(usuario);
-
+                this.usuario = usuario;
         this.servidor=servidor;
         icono=new ImageIcon(this.getClass().getResource("/iconos/chat.png"));
         initComponents();
         this.nombreUsuario.setText(usuario);
-        ModeloTablaAmigos modelo = (ModeloTablaAmigos) this.tablaAmigos.getModel();
+        modelo = (ModeloTablaAmigos) this.tablaAmigos.getModel();
         
             JPopupMenu menu = new JPopupMenu();
         JMenuItem opcion1 = new JMenuItem("Cambiar contraseña");
         
         opcion1.addActionListener((ActionEvent a) -> {
-            VOpciones graficos = new VOpciones(usuario);
-            JFrame frame = new JFrame("P2P");
-            frame.add(graficos);
-            frame.setVisible(true);
-            frame.revalidate();
-            frame.pack();
-            graficos.setVisible(true);
-                SwingUtilities.getWindowAncestor(this).dispose();
+                    try {
+                        VOpciones graficos = new VOpciones(this.servidor,usuario);
+                        JFrame frame = new JFrame("P2P");
+                        frame.add(graficos);
+                        frame.setVisible(true);
+                        frame.revalidate();
+                        frame.pack();
+                        graficos.setVisible(true);
+                        SwingUtilities.getWindowAncestor(this).dispose();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 });
         
         
@@ -103,6 +110,7 @@ public class VAmigos extends javax.swing.JPanel {
                     }
                 }
             }.start();
+        
         
     }
 
@@ -162,6 +170,11 @@ public class VAmigos extends javax.swing.JPanel {
         tablaAmigos.setShowHorizontalLines(false);
         tablaAmigos.setShowVerticalLines(false);
         tablaAmigos.setTableHeader(null);
+        tablaAmigos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaAmigosMouseReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaAmigos);
 
         botonOpciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/opciones.png"))); // NOI18N
@@ -225,7 +238,7 @@ public class VAmigos extends javax.swing.JPanel {
         VPeticiones graficos;
         try {
             graficos = new VPeticiones(this.servidor,this.nombreUsuario.getText());
-                JFrame frame = new JFrame("P2P");
+                JFrame frame = new JFrame("Peticions de amistad pendientes");
         frame.add(graficos);
         frame.setVisible(true);
         frame.revalidate();
@@ -242,7 +255,7 @@ public class VAmigos extends javax.swing.JPanel {
         VAnadir graficos = null;
         try {
             graficos = new VAnadir(servidor,this.nombreUsuario.getText());
-                    JFrame frame = new JFrame("P2P");
+                    JFrame frame = new JFrame("Añadir amigos");
         frame.add(graficos);
         frame.setVisible(true);
         frame.revalidate();
@@ -257,6 +270,22 @@ public class VAmigos extends javax.swing.JPanel {
     private void botonOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOpcionesActionPerformed
  
     }//GEN-LAST:event_botonOpcionesActionPerformed
+
+    private void tablaAmigosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAmigosMouseReleased
+        try {
+            Usuario usuario1 = new Usuario(this.usuario);
+            Usuario usuario2 = new Usuario( modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
+            VChat graficos = new VChat(usuario1,usuario2);
+            JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
+            frame.add(graficos);
+            frame.setVisible(true);
+            frame.revalidate();
+            frame.pack();
+            graficos.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_tablaAmigosMouseReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

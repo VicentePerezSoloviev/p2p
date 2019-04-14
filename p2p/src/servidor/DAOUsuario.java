@@ -1,5 +1,6 @@
 package servidor;
 
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -94,7 +95,7 @@ public class DAOUsuario {
         preparedStmt.execute();
     }
 
-    public ArrayList<Usuario> listarUsuarios() {
+    public ArrayList<Usuario> listarUsuarios() throws RemoteException {
         ArrayList<Usuario> array = new ArrayList <>();
         String query = "SELECT * FROM usuarios";
         Usuario u;

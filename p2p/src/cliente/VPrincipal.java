@@ -7,6 +7,9 @@ package cliente;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -141,31 +144,52 @@ public class VPrincipal extends javax.swing.JPanel {
     }//GEN-LAST:event_nombreUsuarioActionPerformed
 
     private void botonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarseActionPerformed
-        Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
-        try {
-            servidor.introducirUsuario(usuario);
+        try {                                                 
+            Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
+                servidor.introducirUsuario(usuario);
         } catch (RemoteException ex) {
             Logger.getLogger(VPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonRegistrarseActionPerformed
 
     private void botonIdenficarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIdenficarseActionPerformed
-        Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
-        try {
-            if(servidor.iniciarSesion(usuario)){
-                VAmigos graficos = new VAmigos(this.servidor,usuario.getNombreUsuario());
-                JFrame frame = new JFrame("P2P");
-                frame.add(graficos);
-                frame.setVisible(true);
-                frame.revalidate();
-                frame.pack();
-                graficos.setVisible(true);
-                SwingUtilities.getWindowAncestor(this).dispose();
-            }
-            else{
-                this.contra.setText("");
-                this.nombreUsuario.setBackground(Color.red);
-                JOptionPane.showMessageDialog(new JPanel(), "Usuario o contraseña incorrectos", "Error de autentificación", JOptionPane.ERROR_MESSAGE);
+        try {                                                 
+            Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
+            try {
+                if(servidor.iniciarSesion(usuario)){
+                    VAmigos graficos = new VAmigos(this.servidor,usuario.getNombreUsuario());
+                    JFrame frame = new JFrame("Lista de amigos conectados");
+                    WindowListener exitListener = new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            int confirm = JOptionPane.showOptionDialog(
+                                 null, nombreUsuario.getText() + ", seguro que quieres cerrar sesión?", 
+                                 "Salir", JOptionPane.YES_NO_OPTION, 
+                                 JOptionPane.QUESTION_MESSAGE, null, null, null);
+                            if (confirm == 0) {
+                                try {
+                                    servidor.cerrarSesion(nombreUsuario.getText());
+                                } catch (RemoteException ex) {
+                                    Logger.getLogger(VPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                    };
+                    frame.addWindowListener(exitListener);
+                    frame.add(graficos);
+                    frame.setVisible(true);
+                    frame.revalidate();
+                    frame.pack();
+                    graficos.setVisible(true);
+                    SwingUtilities.getWindowAncestor(this).dispose();
+                }
+                else{
+                    this.contra.setText("");
+                    this.nombreUsuario.setBackground(Color.red);
+                    JOptionPane.showMessageDialog(new JPanel(), "Usuario o contraseña incorrectos", "Error de autentificación", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(VPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VPrincipal.class.getName()).log(Level.SEVERE, null, ex);

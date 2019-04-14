@@ -5,17 +5,36 @@
  */
 package cliente;
 
+import java.io.File;
+import java.io.IOException;
+import static java.lang.Thread.sleep;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
+import modelo.Usuario;
+
 /**
  *
  * @author Usuario
  */
-public class VSesion extends javax.swing.JPanel {
+public class VChat extends javax.swing.JPanel {
 
     /**
-     * Creates new form VSesion
+     * Creates new form VChat
+     * @param usuario1
+     * @param usuario2
      */
-    public VSesion() {
+    
+    Usuario usuario1, usuario2;
+    ArrayList <String> mensajes = new ArrayList();
+    
+    public VChat(Usuario usuario1, Usuario usuario2) {
         initComponents();
+        this.nombreUsuario.setText(usuario2.getNombreUsuario());
+        this.usuario1=usuario1;
+        this.usuario2=usuario2;
     }
 
     /**
@@ -29,8 +48,8 @@ public class VSesion extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         fieldMensaje = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        botonArchivo = new javax.swing.JButton();
+        botonEnviar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         listaMensajes = new javax.swing.JList<>();
         nombreUsuario = new javax.swing.JLabel();
@@ -40,15 +59,20 @@ public class VSesion extends javax.swing.JPanel {
         fieldMensaje.setRows(5);
         jScrollPane1.setViewportView(fieldMensaje);
 
-        jButton1.setText("Archivo");
-
-        jButton2.setText("Enviar");
-
-        listaMensajes.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        botonArchivo.setText("Archivo");
+        botonArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonArchivoActionPerformed(evt);
+            }
         });
+
+        botonEnviar.setText("Enviar");
+        botonEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEnviarActionPerformed(evt);
+            }
+        });
+
         jScrollPane2.setViewportView(listaMensajes);
 
         nombreUsuario.setForeground(new java.awt.Color(0, 153, 0));
@@ -77,8 +101,8 @@ public class VSesion extends javax.swing.JPanel {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(botonArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(botonEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(107, 107, 107)
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -101,19 +125,46 @@ public class VSesion extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(botonArchivo)
                         .addGap(17, 17, 17)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(botonEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
+        mostrarMensaje(generarMensaje(this.fieldMensaje.getText()));
+    }//GEN-LAST:event_botonEnviarActionPerformed
 
+    private void botonArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonArchivoActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION){
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println(selectedFile.getName());
+        }
+    }//GEN-LAST:event_botonArchivoActionPerformed
+
+    private String generarMensaje(String mensaje){
+        String mensajeFinal = "[" + this.usuario1.getNombreUsuario() + "] " + mensaje;      
+        return mensajeFinal;
+    }
+    
+    public void mostrarMensaje (String mensaje){
+        DefaultListModel modelo = new DefaultListModel();
+        modelo.addElement(mensaje);
+        this.listaMensajes.setModel(modelo);
+    }
+    
+    public void mostrarArchivo (String mensaje){
+        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonArchivo;
+    private javax.swing.JButton botonEnviar;
     private javax.swing.JTextArea fieldMensaje;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
