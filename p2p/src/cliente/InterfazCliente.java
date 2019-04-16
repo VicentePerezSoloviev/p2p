@@ -6,23 +6,15 @@
 package cliente;
 
 import java.rmi.RemoteException;
+import modelo.Usuario;
 
 /**
  *
  * @author Usuario
  */
 public interface InterfazCliente extends java.rmi.Remote{
-    
-    /* Funcion para comprobar al principio de la conexión los amigos conectados de cada usuario */
-    public void amigosConectados(String [] nombres)throws RemoteException;
-    
-    /*Funcion para notificar una nueva conexión de un amigo de usuario una vez la aplicación se está ejecutando, se ha de usar en bucle*/
-    public void notificarAmigoConectado(String nombre)throws RemoteException;
-    
-    /* */
-    
-    public void peticionAmistad(String emisor)throws RemoteException;
-    
-    
-    
+       
+    public void abrirConversacion(Usuario usuario1, Usuario usuario2)throws RemoteException;
+
+    public void mostrarMensaje(Usuario usuario, String mensaje)throws RemoteException;
 }

@@ -7,6 +7,8 @@ package cliente;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import javax.swing.JFrame;
+import modelo.Usuario;
 
 /**
  *
@@ -14,25 +16,26 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ImplementacionCliente extends UnicastRemoteObject implements InterfazCliente {
     
-    private VAmigos ventanaAmigos;
+    private VChat graficos;
     
     public ImplementacionCliente() throws RemoteException {
         super();
     }
 
     @Override
-    public void amigosConectados(String[] nombres) throws RemoteException{
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void abrirConversacion(Usuario usuario1, Usuario usuario2) throws RemoteException {
+        graficos = new VChat(usuario2,usuario1);
+        JFrame frame = new JFrame("Chat con " + usuario1.getNombreUsuario());
+        frame.add(graficos);
+        frame.setVisible(true);
+        frame.revalidate();
+        frame.pack();
+        graficos.setVisible(true);
     }
 
     @Override
-    public void notificarAmigoConectado(String nombre) throws RemoteException{
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void peticionAmistad(String emisor) throws RemoteException{
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void mostrarMensaje(Usuario usuario, String mensaje) throws RemoteException {
+        graficos.mostrarMensaje(usuario.getNombreUsuario(), mensaje);
     }
     
 }

@@ -6,8 +6,7 @@
 package cliente;
 
 import java.io.File;
-import java.io.IOException;
-import static java.lang.Thread.sleep;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,12 +28,15 @@ public class VChat extends javax.swing.JPanel {
     
     Usuario usuario1, usuario2;
     ArrayList <String> mensajes = new ArrayList();
+    private boolean flagNuevaConversacion = true;
+    DefaultListModel modelo;
     
     public VChat(Usuario usuario1, Usuario usuario2) {
         initComponents();
         this.nombreUsuario.setText(usuario2.getNombreUsuario());
         this.usuario1=usuario1;
         this.usuario2=usuario2;
+        modelo = new DefaultListModel();
     }
 
     /**
@@ -134,7 +136,15 @@ public class VChat extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
-        mostrarMensaje(generarMensaje(this.fieldMensaje.getText()));
+        try {
+            if(flagNuevaConversacion){
+                this.usuario2.getCliente().abrirConversacion(this.usuario1, this.usuario2);
+            }
+            this.usuario2.getCliente().mostrarMensaje(this.usuario1, this.fieldMensaje.getText());
+        } catch (RemoteException ex) {
+            Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        mostrarMensaje(this.usuario1.getNombreUsuario(),this.fieldMensaje.getText());
     }//GEN-LAST:event_botonEnviarActionPerformed
 
     private void botonArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonArchivoActionPerformed
@@ -146,14 +156,10 @@ public class VChat extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_botonArchivoActionPerformed
 
-    private String generarMensaje(String mensaje){
-        String mensajeFinal = "[" + this.usuario1.getNombreUsuario() + "] " + mensaje;      
-        return mensajeFinal;
-    }
-    
-    public void mostrarMensaje (String mensaje){
-        DefaultListModel modelo = new DefaultListModel();
-        modelo.addElement(mensaje);
+    public void mostrarMensaje (String usuario,String mensaje){
+        this.flagNuevaConversacion=false;
+        String mensajeFinal = "[" + usuario + "] " + mensaje;      
+        modelo.addElement(mensajeFinal);
         this.listaMensajes.setModel(modelo);
     }
     
