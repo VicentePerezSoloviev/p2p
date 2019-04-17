@@ -275,8 +275,9 @@ public class VAmigos extends javax.swing.JPanel {
     private void tablaAmigosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAmigosMouseReleased
         try {
             Usuario usuario2 = this.usuario.getCliente().getAmigo(modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
-            JFrame f;
-            if((f = this.conversacionesAbiertas.get(usuario2.getNombreUsuario()))==null){         
+            System.out.println(usuario2.getNombreUsuario());
+            JFrame f= this.conversacionesAbiertas.get(usuario2.getNombreUsuario());
+            if(f == null){         
                 VChat graficos = new VChat(usuario,usuario2);
                 JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
                  WindowListener exitListener = new WindowAdapter() {
