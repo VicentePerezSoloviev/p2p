@@ -80,37 +80,30 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         return true;
     }
 
-    public ArrayList<String> listarUsuariosConectados() {
-        ArrayList<String> arrayString = new ArrayList<>();
-        
-        for (Usuario us: this.hilo.getListaUsuariosConectados()){
-            arrayString.add(us.getNombreUsuario());
-        }
-        
-        return arrayString;
+    public ArrayList<Usuario> listarUsuariosConectados() {
+        return this.hilo.getListaUsuariosConectados();
     }
 
     @Override
-    public ArrayList<String> listarAmigosConectados(String u) throws RemoteException{
-        ArrayList<String> usuariosConectados = this.listarUsuariosConectados();
-        ArrayList<String> amigosUsuario = this.daoUsuario.listarAmigos(u);
-        System.out.println(usuariosConectados);
-        System.out.println(amigosUsuario);
+    public ArrayList<String> listarAmigosConectados(Usuario u) throws RemoteException{
+        ArrayList<Usuario> usuariosConectados = this.listarUsuariosConectados();
+        ArrayList<String> amigosUsuario = this.daoUsuario.listarAmigos(u.getNombreUsuario());
         
-        //usuariosConectados.retainAll(amigosUsuario);
-        if (usuariosConectados.contains(u)) usuariosConectados.remove(u);       //nunca se ejecuta??
-        System.out.println(usuariosConectados);
-        ArrayList<String> arrayEliminar = new ArrayList<>();
-        for (String s: amigosUsuario) {
-            if (!usuariosConectados.contains(s)){
-                arrayEliminar.add(s);       //guardo todos los usuarios para eliminar pk no estan conectados
+        //if (usuariosConectados.contains(u)) usuariosConectados.remove(u);       //nunca se ejecuta??
+        
+        ArrayList<Usuario> arrayEliminar = new ArrayList<>();
+
+        for (Usuario us: usuariosConectados) {
+            if (!amigosUsuario.contains(us.getNombreUsuario())){
+                arrayEliminar.add(us);
             }
         }
-        for (String s: arrayEliminar){
-            amigosUsuario.remove(s);
+        for (Usuario us: arrayEliminar) {
+            usuariosConectados.remove(us);
         }
-        System.out.println(amigosUsuario);
-        System.out.println(usuariosConectados);
+        for (Usuario us: usuariosConectados) {
+            us.getCliente().registrarAmigo(us);
+        }
         
         return amigosUsuario;
     }
