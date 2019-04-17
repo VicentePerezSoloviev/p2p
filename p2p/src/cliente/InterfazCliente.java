@@ -14,7 +14,9 @@ import modelo.Usuario;
  */
 public interface InterfazCliente extends java.rmi.Remote{
        
-    public void abrirConversacion(Usuario usuario1, Usuario usuario2)throws RemoteException;
+    public void registrarAmigos(Usuario usuario) throws RemoteException;
+    
+    public void abrirConversacion(Usuario usuario1, String usuario2)throws RemoteException;
 
     public void mostrarMensaje(String usuario, String mensaje)throws RemoteException;
 }

@@ -144,19 +144,19 @@ public class VPeticiones extends javax.swing.JPanel {
 
     private void tablaPeticionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPeticionesMouseReleased
         boolean flagUpdate = false;
-        if(tablaPeticiones.getSelectedRow()!=-1){
+        int c = tablaPeticiones.rowAtPoint(evt.getPoint());
         try {
             switch (tablaPeticiones.getSelectedColumn()) {
                 case 1:
-                    servidor.responderPeticionAmistad(modelo.getUsuario(tablaPeticiones.getSelectedRow()), usuario, true);
+                    servidor.responderPeticionAmistad(modelo.getUsuario(c), usuario, true);
                     flagUpdate = true;
                     break;
                 case 2:
-                    servidor.responderPeticionAmistad(modelo.getUsuario(tablaPeticiones.getSelectedRow()), usuario, false);
+                    servidor.responderPeticionAmistad(modelo.getUsuario(c), usuario, false);
                     flagUpdate = true;
                     break;
                 default:
-                    String emisor = modelo.getUsuario(tablaPeticiones.getSelectedRow());
+                    String emisor = modelo.getUsuario(c);
                     int input = JOptionPane.showConfirmDialog(null, "Quieres aceptar a " + emisor  + " como amig@?");
                     switch (input){
                         case 0:
@@ -188,7 +188,7 @@ public class VPeticiones extends javax.swing.JPanel {
                 modelo.setFilas(peticiones);
                 modelo.fireTableDataChanged();
             }
-        }
+        
         }
     }//GEN-LAST:event_tablaPeticionesMouseReleased
 
