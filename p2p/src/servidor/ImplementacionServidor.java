@@ -22,8 +22,6 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         return this.daoUsuario.introducirUsuario(usuario);
     }
     
-    
-    
     @Override
     public boolean cambiarContrasena (Usuario usuario, String nuevaContrasena) throws RemoteException{
         return this.daoUsuario.cambiarContrasena(usuario, nuevaContrasena);
@@ -61,7 +59,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         /*Comprobamos si existe el usuario que se pasa por parametro*/
         
         ArrayList<Usuario> array = this.listarUsuarios();
-                
+        
         for (Usuario array1 : array) {
             if (array1.getNombreUsuario().equals(u.getNombreUsuario()) && array1.getPassword().equals(u.getPassword())){
                 
@@ -106,6 +104,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         for (Usuario us: usuariosConectados) {
             us.getCliente().registrarAmigo(us);
         }
+        
         
         return usuariosConectados;
     }
