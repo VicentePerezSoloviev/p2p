@@ -22,6 +22,4 @@ public interface InterfazCliente extends java.rmi.Remote{
 
     public void mostrarMensaje(String usuario, String mensaje)throws RemoteException;
     
-    
-    public void registrarAmigo (Usuario u) throws RemoteException;
 }
