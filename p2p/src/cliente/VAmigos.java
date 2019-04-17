@@ -46,8 +46,8 @@ public class VAmigos extends javax.swing.JPanel {
 
     
     public VAmigos(InterfazServidor servidor,Usuario usuario) throws RemoteException {
-                amigos = servidor.listarAmigosConectados(usuario);
-                this.usuario = usuario;
+        amigos = servidor.listarAmigosConectados(usuario);
+        this.usuario = usuario;
         this.servidor=servidor;
         icono=new ImageIcon(this.getClass().getResource("/iconos/chat.png"));
         initComponents();

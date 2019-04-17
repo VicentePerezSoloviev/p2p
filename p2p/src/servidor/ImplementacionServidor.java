@@ -64,7 +64,8 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
                 
         for (Usuario array1 : array) {
             if (array1.getNombreUsuario().equals(u.getNombreUsuario()) && array1.getPassword().equals(u.getPassword())){
-                
+                                System.out.println("anaduendi");
+
                 this.hilo.anadirUsuarioConectado(u);        //anadimos a array de usuarios conectados de hilo
                 return true;
             }
@@ -98,15 +99,24 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
                 arrayEliminar.add(us);
             }
         }
-        
+        System.out.println("Eliminar: " + arrayEliminar.toString());
+        System.out.println("Conectados " + usuariosConectados);
+                System.out.println("Amigos " + amigosUsuario);
+
         for (Usuario us: arrayEliminar) {
             usuariosConectados.remove(us);
         }
-        
+               System.out.println("Eliminar: " + arrayEliminar.toString());
+        System.out.println("Conectados " + usuariosConectados);
+                System.out.println("Amigos " + amigosUsuario);
+
         for (Usuario us: usuariosConectados) {
             us.getCliente().registrarAmigo(us);
         }
-        
+               System.out.println("Eliminar: " + arrayEliminar.toString());
+        System.out.println("Conectados " + usuariosConectados);
+                System.out.println("Amigos " + amigosUsuario);
+
         return usuariosConectados;
     }
 
