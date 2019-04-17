@@ -34,8 +34,8 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
     }
 
     @Override
-    public void mostrarMensaje(Usuario usuario, String mensaje) throws RemoteException {
-        graficos.mostrarMensaje(usuario.getNombreUsuario(), mensaje);
+    public void mostrarMensaje(String usuario, String mensaje) throws RemoteException {
+        graficos.mostrarMensaje(usuario, mensaje);
     }
     
 }

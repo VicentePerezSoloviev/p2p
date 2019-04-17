@@ -16,5 +16,5 @@ public interface InterfazCliente extends java.rmi.Remote{
        
     public void abrirConversacion(Usuario usuario1, Usuario usuario2)throws RemoteException;
 
-    public void mostrarMensaje(Usuario usuario, String mensaje)throws RemoteException;
+    public void mostrarMensaje(String usuario, String mensaje)throws RemoteException;
 }

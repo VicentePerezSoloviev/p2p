@@ -140,7 +140,8 @@ public class VChat extends javax.swing.JPanel {
             if(flagNuevaConversacion){
                 this.usuario2.getCliente().abrirConversacion(this.usuario1, this.usuario2);
             }
-            this.usuario2.getCliente().mostrarMensaje(this.usuario1, this.fieldMensaje.getText());
+            System.out.println(this.usuario1.getNombreUsuario() + "ENVIANDO MENSAJE " + this.fieldMensaje.getText());
+            this.usuario2.getCliente().mostrarMensaje(this.usuario1.getNombreUsuario(), this.fieldMensaje.getText());
         } catch (RemoteException ex) {
             Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -160,6 +161,8 @@ public class VChat extends javax.swing.JPanel {
         this.flagNuevaConversacion=false;
         String mensajeFinal = "[" + usuario + "] " + mensaje;      
         modelo.addElement(mensajeFinal);
+                    System.out.println(usuario1 + "RECIBIENDO MENSAJE " + mensaje);
+
         this.listaMensajes.setModel(modelo);
     }
     

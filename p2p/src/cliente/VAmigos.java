@@ -7,21 +7,22 @@ package cliente;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 import modelo.Usuario;
 import servidor.InterfazServidor;
 
@@ -41,6 +42,7 @@ public class VAmigos extends javax.swing.JPanel {
     private ArrayList<String> amigos;
     ModeloTablaAmigos modelo;
     String usuario;
+    HashMap <String, JFrame> conversacionesAbiertas;
 
     
     public VAmigos(InterfazServidor servidor,String usuario) throws RemoteException {
@@ -111,7 +113,7 @@ public class VAmigos extends javax.swing.JPanel {
                 }
             }.start();
         
-        
+        conversacionesAbiertas = new HashMap();
     }
 
     /**
@@ -252,7 +254,7 @@ public class VAmigos extends javax.swing.JPanel {
     }//GEN-LAST:event_botonPeticionesActionPerformed
 
     private void botonAnadirAmigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnadirAmigoActionPerformed
-        VAnadir graficos = null;
+        VAnadir graficos;
         try {
             graficos = new VAnadir(servidor,this.nombreUsuario.getText());
                     JFrame frame = new JFrame("Añadir amigos");
@@ -275,13 +277,28 @@ public class VAmigos extends javax.swing.JPanel {
         try {
             Usuario usuario1 = new Usuario(this.usuario);
             Usuario usuario2 = new Usuario( modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
-            VChat graficos = new VChat(usuario1,usuario2);
-            JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
-            frame.add(graficos);
-            frame.setVisible(true);
-            frame.revalidate();
-            frame.pack();
-            graficos.setVisible(true);
+            JFrame f;
+            if((f = this.conversacionesAbiertas.get(usuario2.getNombreUsuario()))==null){         
+                VChat graficos = new VChat(usuario1,usuario2);
+                JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
+                 WindowListener exitListener = new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            conversacionesAbiertas.remove(usuario2.getNombreUsuario());
+                        }
+                    };
+                frame.addWindowListener(exitListener);
+                frame.add(graficos);
+                frame.setVisible(true);
+                frame.revalidate();
+                frame.pack();
+                graficos.setVisible(true);
+                this.conversacionesAbiertas.put(usuario2.getNombreUsuario(),frame);
+            }
+            else{
+                f.setVisible(true);
+                f.toFront();
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
         }
