@@ -39,7 +39,7 @@ public class VAmigos extends javax.swing.JPanel {
     
     private ImageIcon icono;
     private InterfazServidor servidor;
-    private ArrayList<String> amigos;
+    private ArrayList<Usuario> amigos;
     ModeloTablaAmigos modelo;
     Usuario usuario;
     HashMap <String, JFrame> conversacionesAbiertas;
@@ -100,7 +100,7 @@ public class VAmigos extends javax.swing.JPanel {
                             try {
                                 sleep(5000);
                                 synchronized(amigos){
-                                    amigos=servidor.listarAmigosConectados(this.usuario);
+                                    amigos=servidor.listarAmigosConectados(usuario);
                                 }                                
                             } catch (IOException | InterruptedException ex) {
                                 Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);

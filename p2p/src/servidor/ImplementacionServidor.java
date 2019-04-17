@@ -85,7 +85,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     }
 
     @Override
-    public ArrayList<String> listarAmigosConectados(Usuario u) throws RemoteException{
+    public ArrayList<Usuario> listarAmigosConectados(Usuario u) throws RemoteException{
         ArrayList<Usuario> usuariosConectados = this.listarUsuariosConectados();
         ArrayList<String> amigosUsuario = this.daoUsuario.listarAmigos(u.getNombreUsuario());
         
@@ -98,14 +98,16 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
                 arrayEliminar.add(us);
             }
         }
+        
         for (Usuario us: arrayEliminar) {
             usuariosConectados.remove(us);
         }
+        
         for (Usuario us: usuariosConectados) {
             us.getCliente().registrarAmigo(us);
         }
         
-        return amigosUsuario;
+        return usuariosConectados;
     }
 
     @Override

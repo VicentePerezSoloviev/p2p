@@ -8,6 +8,7 @@ package cliente;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.table.AbstractTableModel;
+import modelo.Usuario;
 
 /**
  *
@@ -15,10 +16,10 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModeloTablaAmigos extends AbstractTableModel{
 
-    private ArrayList<String> amigos=new ArrayList<>();
+    private ArrayList<Usuario> amigos=new ArrayList<>();
     ImageIcon icono;
     
-    public ModeloTablaAmigos(ArrayList<String> amigos, ImageIcon icono){
+    public ModeloTablaAmigos(ArrayList<Usuario> amigos, ImageIcon icono){
         for(int i=0;i<amigos.size();i++) {
             this.amigos.add(amigos.get(i));
         }
@@ -56,14 +57,14 @@ public class ModeloTablaAmigos extends AbstractTableModel{
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex){
             case 0:
-                return this.amigos.get(rowIndex);
+                return this.amigos.get(rowIndex).getNombreUsuario();
             case 1:
                 return this.icono;
         }
         return null;
     }
     
-    public void setFilas(ArrayList<String> amigos){
+    public void setFilas(ArrayList<Usuario> amigos){
         if(!amigos.isEmpty()){
                     for(int i=0;i<amigos.size();i++) {
             this.amigos.add(amigos.get(i));
@@ -78,7 +79,7 @@ public class ModeloTablaAmigos extends AbstractTableModel{
     }
         
     public String getUsuario(int row){
-        return this.amigos.get(row);
+        return this.amigos.get(row).getNombreUsuario();
     }
     
 }
