@@ -238,7 +238,7 @@ public class VAmigos extends javax.swing.JPanel {
     private void botonPeticionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPeticionesActionPerformed
         VPeticiones graficos;
         try {
-            graficos = new VPeticiones(this.servidor,this.nombreUsuario.getText());
+            graficos = new VPeticiones(this.servidor,this.usuario);
                 JFrame frame = new JFrame("Peticions de amistad pendientes");
         frame.add(graficos);
         frame.setVisible(true);
@@ -274,11 +274,10 @@ public class VAmigos extends javax.swing.JPanel {
 
     private void tablaAmigosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAmigosMouseReleased
         try {
-            Usuario usuario1 = new Usuario(this.usuario);
-            Usuario usuario2 = new Usuario( modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
+            Usuario usuario2 = this.usuario.getCliente().getAmigo(modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
             JFrame f;
             if((f = this.conversacionesAbiertas.get(usuario2.getNombreUsuario()))==null){         
-                VChat graficos = new VChat(usuario1,usuario2);
+                VChat graficos = new VChat(usuario,usuario2);
                 JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
                  WindowListener exitListener = new WindowAdapter() {
                         @Override

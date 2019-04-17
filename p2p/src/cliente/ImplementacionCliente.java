@@ -26,7 +26,7 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
     }
     
     @Override
-    public void registrarAmigo (Usuario usuario){
+    public void registrarAmigo (Usuario usuario) throws RemoteException{
         if(!usuarios.contains(usuario)){
             usuarios.add(usuario);
         }
@@ -34,23 +34,30 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
 
     @Override
     public void abrirConversacion(Usuario usuario1, String usuario2) throws RemoteException {
-        for(int i = 0; i< usuarios.size();i++){
-            if(usuarios.get(i).getNombreUsuario().equals(usuario2)){
-                graficos = new VChat(usuarios.get(i),usuario1);
+                Usuario aux = this.getAmigo(usuario2);
+                graficos = new VChat(aux,usuario1);
                 JFrame frame = new JFrame("Chat con " + usuario1.getNombreUsuario());
                 frame.add(graficos);
                 frame.setVisible(true);
                 frame.revalidate();
                 frame.pack();
                 graficos.setVisible(true);
-            }
-        }
  
     }
 
     @Override
     public void mostrarMensaje(String usuario, String mensaje) throws RemoteException {
         graficos.mostrarMensaje(usuario, mensaje);
+    }
+
+    @Override
+    public Usuario getAmigo(String usuario) throws RemoteException {
+        for(int i = 0; i< usuarios.size();i++){
+            if(usuarios.get(i).getNombreUsuario().equals(usuario)){
+                return usuarios.get(i);
+            }
+        }
+        return null;
     }
     
 }
