@@ -8,13 +8,12 @@ import modelo.Usuario;
 public class ImplementacionServidor extends UnicastRemoteObject implements InterfazServidor{
     
     private final DAOUsuario daoUsuario;
-    private final Hilo hilo;
+    private final ArrayList<Usuario> listaUsuariosConectados;
     
     public ImplementacionServidor () throws RemoteException {
         super();
-        this.hilo = new Hilo(this);
         this.daoUsuario = new DAOUsuario();
-        this.hilo.start();
+        this.listaUsuariosConectados = new ArrayList<>();
     }
     
     @Override
@@ -50,7 +49,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     public boolean iniciarSesion(Usuario u) throws RemoteException{
         /*Comprobamos si el usuario ya esta en linea*/
         
-        for (Usuario s: this.hilo.getListaUsuariosConectados()){
+        for (Usuario s: this.listaUsuariosConectados){
             if (s.getNombreUsuario().equals(u.getNombreUsuario())){
                 System.out.println("El usuario ya esta en linea");
                 return false;
@@ -63,7 +62,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         for (Usuario array1 : array) {
             if (array1.getNombreUsuario().equals(u.getNombreUsuario()) && array1.getPassword().equals(u.getPassword())){
 
-                this.hilo.anadirUsuarioConectado(u);        //anadimos a array de usuarios conectados de hilo
+                this.listaUsuariosConectados.add(u);
                 return true;
             }
         }
@@ -73,18 +72,24 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
 
     @Override
     public boolean cerrarSesion(String u) throws RemoteException{
-        Usuario usuario = new Usuario (u, null);
-        this.hilo.eliminarUsuarioConectado(usuario);
+        
+        for (Usuario us: this.listaUsuariosConectados) {
+            if (us.getNombreUsuario().equals(u)){
+                this.listaUsuariosConectados.remove(us);
+            }
+        }
         return true;
+        
     }
 
     public ArrayList<Usuario> listarUsuariosConectados() {
-        return this.hilo.getListaUsuariosConectados();
+        return this.listaUsuariosConectados;
     }
 
     @Override
     public ArrayList<Usuario> listarAmigosConectados(Usuario u) throws RemoteException{
         ArrayList<Usuario> usuariosConectados = this.listarUsuariosConectados();
+        for (Usuario us: this.listaUsuariosConectados) System.out.println("->" + us.getNombreUsuario());
         ArrayList<String> amigosUsuario = this.daoUsuario.listarAmigos(u.getNombreUsuario());
         
         if (usuariosConectados.contains(u)) usuariosConectados.remove(u);       //nunca se ejecuta??
@@ -96,25 +101,14 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
                 arrayEliminar.add(us);
             }
         }
-        System.out.println("Eliminar: " + arrayEliminar.toString());
-        System.out.println("Conectados " + usuariosConectados);
-                System.out.println("Amigos " + amigosUsuario);
 
         for (Usuario us: arrayEliminar) {
             usuariosConectados.remove(us);
         }
-               System.out.println("Eliminar: " + arrayEliminar.toString());
-        System.out.println("Conectados " + usuariosConectados);
-                System.out.println("Amigos " + amigosUsuario);
 
         for (Usuario us: usuariosConectados) {
             us.getCliente().registrarAmigo(us);
         }
-        
-        
-               System.out.println("Eliminar: " + arrayEliminar.toString());
-        System.out.println("Conectados " + usuariosConectados);
-                System.out.println("Amigos " + amigosUsuario);
 
         return usuariosConectados;
     }
