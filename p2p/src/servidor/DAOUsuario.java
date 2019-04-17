@@ -183,7 +183,7 @@ public class DAOUsuario {
         
         /*Cogemos todos los amigos cuando usuario es el nombreB*/
         
-        query = "SELECT nombreA FROM AMG_PET WHERE nombreB='"+usuario+"';";
+        query = "SELECT nombreA FROM AMG_PET WHERE nombreB='"+usuario+"' AND EST_PET=1;;";
         boolean check;
         
         try {
