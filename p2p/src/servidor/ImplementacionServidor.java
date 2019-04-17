@@ -113,7 +113,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         }
 
         for (Usuario us: usuariosConectados) {
-            us.getCliente().registrarAmigo(us);
+            u.getCliente().registrarAmigo(us);
         }
 
         return usuariosConectados;
