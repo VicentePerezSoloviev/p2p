@@ -89,7 +89,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         ArrayList<Usuario> usuariosConectados = this.listarUsuariosConectados();
         ArrayList<String> amigosUsuario = this.daoUsuario.listarAmigos(u.getNombreUsuario());
         
-        //if (usuariosConectados.contains(u)) usuariosConectados.remove(u);       //nunca se ejecuta??
+        if (usuariosConectados.contains(u)) usuariosConectados.remove(u);       //nunca se ejecuta??
         
         ArrayList<Usuario> arrayEliminar = new ArrayList<>();
 
