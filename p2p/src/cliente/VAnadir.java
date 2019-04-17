@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import modelo.Usuario;
 import servidor.InterfazServidor;
 
 /**
@@ -26,7 +27,7 @@ public class VAnadir extends javax.swing.JPanel {
     private final ImageIcon iconoMas;
     private InterfazServidor servidor;
     
-    ArrayList<String> arrayUsuarios;
+    ArrayList<Usuario> arrayUsuarios;
     
     ModeloTablaAmigos modelo;
     
@@ -36,7 +37,7 @@ public class VAnadir extends javax.swing.JPanel {
         
         this.servidor = servidor;
         this.usuario=usuario;
-        arrayUsuarios = servidor.listarUsuariosString();
+        arrayUsuarios = servidor.listarUsuarios();
         iconoMas=new ImageIcon(this.getClass().getResource("/iconos/anadir.jpg"));
         
         initComponents();

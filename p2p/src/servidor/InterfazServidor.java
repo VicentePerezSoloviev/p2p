@@ -56,7 +56,7 @@ public interface InterfazServidor extends Remote {
     
     /*Devuelve un array con la lista de amigos que esten conectados a partir de la tabla
     relacion entre amigos : grupos de amigos*/
-    public ArrayList<String> listarAmigosConectados(Usuario u) throws RemoteException;
+    public ArrayList<Usuario> listarAmigosConectados(Usuario u) throws RemoteException;
     
     
     /*Devuelve la lista de peticiones que todavia estan sin responder para el usuarii
