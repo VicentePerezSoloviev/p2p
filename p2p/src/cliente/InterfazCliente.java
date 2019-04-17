@@ -6,6 +6,8 @@
 package cliente;
 
 import java.rmi.RemoteException;
+import java.util.HashMap;
+import javax.swing.JFrame;
 import modelo.Usuario;
 
 /**
@@ -18,8 +20,10 @@ public interface InterfazCliente extends java.rmi.Remote{
        
     public void registrarAmigo (Usuario usuario) throws RemoteException;
     
-    public void abrirConversacion(Usuario usuario1, String usuario2)throws RemoteException;
+    public void abrirConversacion(Usuario usuario1, String usuario2, HashMap <String, VChat> conversaciones) throws RemoteException;
 
     public void mostrarMensaje(String usuario, String mensaje)throws RemoteException;
+    
+    public void setConversacion(VChat conversacion, Usuario usuario1, Usuario usuario2) throws RemoteException;
     
 }

@@ -8,6 +8,7 @@ package cliente;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JFrame;
 import modelo.Usuario;
 
@@ -33,10 +34,10 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
     }
 
     @Override
-    public void abrirConversacion(Usuario usuario1, String usuario2) throws RemoteException {
+    public void abrirConversacion(Usuario usuario1, String usuario2, HashMap <String, VChat> conversaciones) throws RemoteException {
                 Usuario aux = this.getAmigo(usuario2);
-                graficos = new VChat(aux,usuario1);
-                JFrame frame = new JFrame("Chat con " + usuario1.getNombreUsuario());
+                graficos = new VChat(usuario1,aux, conversaciones);
+                JFrame frame = new JFrame("Chat con " + aux.getNombreUsuario());
                 frame.add(graficos);
                 frame.setVisible(true);
                 frame.revalidate();
@@ -58,6 +59,12 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
             }
         }
         return null;
+    }
+
+    @Override
+    public void setConversacion(VChat conversacion, Usuario usuario1, Usuario usuario2) throws RemoteException {
+        this.graficos=conversacion;
+        
     }
     
 }

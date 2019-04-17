@@ -8,10 +8,12 @@ package cliente;
 import java.io.File;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import modelo.Usuario;
 
 /**
@@ -30,13 +32,15 @@ public class VChat extends javax.swing.JPanel {
     ArrayList <String> mensajes = new ArrayList();
     private boolean flagNuevaConversacion = true;
     DefaultListModel modelo;
+     HashMap <String, VChat> conversacionesAbiertas;
     
-    public VChat(Usuario usuario1, Usuario usuario2) {
+    public VChat(Usuario usuario1, Usuario usuario2, HashMap <String, VChat> conversacionesAbiertas) {
         initComponents();
         this.nombreUsuario.setText(usuario2.getNombreUsuario());
         this.usuario1=usuario1;
         this.usuario2=usuario2;
         modelo = new DefaultListModel();
+        this.conversacionesAbiertas=conversacionesAbiertas;
     }
 
     /**
@@ -138,7 +142,11 @@ public class VChat extends javax.swing.JPanel {
     private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
         try {
             if(flagNuevaConversacion){
-                this.usuario2.getCliente().abrirConversacion(this.usuario2, this.usuario1.getNombreUsuario());
+                this.usuario2.getCliente().abrirConversacion(this.usuario2, this.usuario1.getNombreUsuario(), this.conversacionesAbiertas);
+                this.flagNuevaConversacion=false;
+            }
+            else{
+                this.usuario2.getCliente().setConversacion(this.conversacionesAbiertas.get(this.usuario2.getNombreUsuario()), this.usuario2,this.usuario1);
             }
             System.out.println(this.usuario1.getNombreUsuario() + "ENVIANDO MENSAJE " + this.fieldMensaje.getText());
             this.usuario2.getCliente().mostrarMensaje(this.usuario1.getNombreUsuario(), this.fieldMensaje.getText());
@@ -157,6 +165,7 @@ public class VChat extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_botonArchivoActionPerformed
 
+    
     public void mostrarMensaje (String usuario,String mensaje){
         this.flagNuevaConversacion=false;
         String mensajeFinal = "[" + usuario + "] " + mensaje;      

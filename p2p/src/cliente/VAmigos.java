@@ -42,7 +42,7 @@ public class VAmigos extends javax.swing.JPanel {
     private ArrayList<Usuario> amigos;
     ModeloTablaAmigos modelo;
     Usuario usuario;
-    HashMap <String, JFrame> conversacionesAbiertas;
+    HashMap <String, VChat> conversacionesAbiertas;
 
     
     public VAmigos(InterfazServidor servidor,Usuario usuario) throws RemoteException {
@@ -275,12 +275,11 @@ public class VAmigos extends javax.swing.JPanel {
     private void tablaAmigosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAmigosMouseReleased
         try {
             Usuario usuario2 = this.usuario.getCliente().getAmigo(modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
-            System.out.println(usuario2.getNombreUsuario());
-            JFrame f= this.conversacionesAbiertas.get(usuario2.getNombreUsuario());
+            VChat f = this.conversacionesAbiertas.get(usuario2.getNombreUsuario());
             if(f == null){         
-                VChat graficos = new VChat(usuario,usuario2);
+                VChat graficos = new VChat(usuario,usuario2,conversacionesAbiertas);
                 JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
-                 WindowListener exitListener = new WindowAdapter() {
+                WindowListener exitListener = new WindowAdapter() {
                         @Override
                         public void windowClosing(WindowEvent e) {
                             conversacionesAbiertas.remove(usuario2.getNombreUsuario());
@@ -292,11 +291,11 @@ public class VAmigos extends javax.swing.JPanel {
                 frame.revalidate();
                 frame.pack();
                 graficos.setVisible(true);
-                this.conversacionesAbiertas.put(usuario2.getNombreUsuario(),frame);
+                this.conversacionesAbiertas.put(usuario2.getNombreUsuario(),f);
             }
             else{
                 f.setVisible(true);
-                f.toFront();
+                SwingUtilities.getWindowAncestor(f).toFront();
             }
         } catch (RemoteException ex) {
             Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
