@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import modelo.Usuario;
 import servidor.InterfazServidor;
 
 /**
@@ -26,17 +27,17 @@ public class VPeticiones extends javax.swing.JPanel {
      * Creates new form VPeticiones
      */
     
-    private String usuario;
+    private Usuario usuario;
     private InterfazServidor servidor;
     private ArrayList<String> peticiones;
     private ImageIcon iconoAceptar, iconoRechazar;
     private ModeloTablaPeticiones modelo;
 
     
-    public VPeticiones(InterfazServidor servidor, String usuario) throws RemoteException {
+    public VPeticiones(InterfazServidor servidor, Usuario usuario) throws RemoteException {
         this.servidor=servidor;
         this.usuario=usuario;
-        peticiones=this.servidor.listarPeticionesPendientes(usuario);
+        peticiones=this.servidor.listarPeticionesPendientes(usuario.getNombreUsuario());
         iconoAceptar=new ImageIcon(this.getClass().getResource("/iconos/aceptar.png"));
         iconoRechazar=new ImageIcon(this.getClass().getResource("/iconos/rechazar.png"));
         initComponents();
@@ -144,28 +145,28 @@ public class VPeticiones extends javax.swing.JPanel {
 
     private void tablaPeticionesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPeticionesMouseReleased
         boolean flagUpdate = false;
-        if(tablaPeticiones.getSelectedRow()!=-1){
+        int c = tablaPeticiones.rowAtPoint(evt.getPoint());
         try {
             switch (tablaPeticiones.getSelectedColumn()) {
                 case 1:
-                    servidor.responderPeticionAmistad(modelo.getUsuario(tablaPeticiones.getSelectedRow()), usuario, true);
+                    servidor.responderPeticionAmistad(modelo.getUsuario(c), usuario.getNombreUsuario(), true);
                     flagUpdate = true;
                     break;
                 case 2:
-                    servidor.responderPeticionAmistad(modelo.getUsuario(tablaPeticiones.getSelectedRow()), usuario, false);
+                    servidor.responderPeticionAmistad(modelo.getUsuario(c), usuario.getNombreUsuario(), false);
                     flagUpdate = true;
                     break;
                 default:
-                    String emisor = modelo.getUsuario(tablaPeticiones.getSelectedRow());
+                    String emisor = modelo.getUsuario(c);
                     int input = JOptionPane.showConfirmDialog(null, "Quieres aceptar a " + emisor  + " como amig@?");
                     switch (input){
                         case 0:
-                            servidor.responderPeticionAmistad(emisor, usuario, true);
+                            servidor.responderPeticionAmistad(emisor, usuario.getNombreUsuario(), true);
                                                 flagUpdate = true;
 
                             break;
                         case 1:
-                            servidor.responderPeticionAmistad(emisor, usuario, false);
+                            servidor.responderPeticionAmistad(emisor, usuario.getNombreUsuario(), false);
                                                 flagUpdate = true;
 
                             break;
@@ -179,7 +180,7 @@ public class VPeticiones extends javax.swing.JPanel {
         
         if(flagUpdate){
             try {
-                peticiones=this.servidor.listarPeticionesPendientes(usuario);
+                peticiones=this.servidor.listarPeticionesPendientes(usuario.getNombreUsuario());
             } catch (RemoteException ex) {
                 Logger.getLogger(VPeticiones.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -188,7 +189,7 @@ public class VPeticiones extends javax.swing.JPanel {
                 modelo.setFilas(peticiones);
                 modelo.fireTableDataChanged();
             }
-        }
+        
         }
     }//GEN-LAST:event_tablaPeticionesMouseReleased
 

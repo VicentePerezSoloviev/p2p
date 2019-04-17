@@ -41,17 +41,17 @@ public class VAmigos extends javax.swing.JPanel {
     private InterfazServidor servidor;
     private ArrayList<String> amigos;
     ModeloTablaAmigos modelo;
-    String usuario;
+    Usuario usuario;
     HashMap <String, JFrame> conversacionesAbiertas;
 
     
-    public VAmigos(InterfazServidor servidor,String usuario) throws RemoteException {
+    public VAmigos(InterfazServidor servidor,Usuario usuario) throws RemoteException {
                 amigos = servidor.listarAmigosConectados(usuario);
                 this.usuario = usuario;
         this.servidor=servidor;
         icono=new ImageIcon(this.getClass().getResource("/iconos/chat.png"));
         initComponents();
-        this.nombreUsuario.setText(usuario);
+        this.nombreUsuario.setText(this.usuario.getNombreUsuario());
         modelo = (ModeloTablaAmigos) this.tablaAmigos.getModel();
         
             JPopupMenu menu = new JPopupMenu();
@@ -59,7 +59,7 @@ public class VAmigos extends javax.swing.JPanel {
         
         opcion1.addActionListener((ActionEvent a) -> {
                     try {
-                        VOpciones graficos = new VOpciones(this.servidor,usuario);
+                        VOpciones graficos = new VOpciones(this.servidor,usuario.getNombreUsuario());
                         JFrame frame = new JFrame("P2P");
                         frame.add(graficos);
                         frame.setVisible(true);
@@ -77,7 +77,7 @@ public class VAmigos extends javax.swing.JPanel {
         
                 opcion2.addActionListener((ActionEvent a) -> {
                     try {
-                        servidor.cerrarSesion(usuario);
+                        servidor.cerrarSesion(usuario.getNombreUsuario());
                         System.exit(1);
                     } catch (RemoteException ex) {
                         Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,8 +100,7 @@ public class VAmigos extends javax.swing.JPanel {
                             try {
                                 sleep(5000);
                                 synchronized(amigos){
-                                    System.out.println("LISTANDO AMIGOS DE: " + usuario);
-                                    amigos=servidor.listarAmigosConectados(usuario);
+                                    amigos=servidor.listarAmigosConectados(this.usuario);
                                 }                                
                             } catch (IOException | InterruptedException ex) {
                                 Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
@@ -239,7 +238,7 @@ public class VAmigos extends javax.swing.JPanel {
     private void botonPeticionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPeticionesActionPerformed
         VPeticiones graficos;
         try {
-            graficos = new VPeticiones(this.servidor,this.nombreUsuario.getText());
+            graficos = new VPeticiones(this.servidor,this.usuario);
                 JFrame frame = new JFrame("Peticions de amistad pendientes");
         frame.add(graficos);
         frame.setVisible(true);
@@ -275,11 +274,10 @@ public class VAmigos extends javax.swing.JPanel {
 
     private void tablaAmigosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAmigosMouseReleased
         try {
-            Usuario usuario1 = new Usuario(this.usuario);
-            Usuario usuario2 = new Usuario( modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
+            Usuario usuario2 = this.usuario.getCliente().getAmigo(modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
             JFrame f;
             if((f = this.conversacionesAbiertas.get(usuario2.getNombreUsuario()))==null){         
-                VChat graficos = new VChat(usuario1,usuario2);
+                VChat graficos = new VChat(usuario,usuario2);
                 JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
                  WindowListener exitListener = new WindowAdapter() {
                         @Override

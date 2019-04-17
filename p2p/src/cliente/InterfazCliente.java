@@ -13,8 +13,12 @@ import modelo.Usuario;
  * @author Usuario
  */
 public interface InterfazCliente extends java.rmi.Remote{
+    
+        public Usuario getAmigo(String usuario) throws RemoteException;
        
-    public void abrirConversacion(Usuario usuario1, Usuario usuario2)throws RemoteException;
+    public void registrarAmigo (Usuario usuario) throws RemoteException;
+    
+    public void abrirConversacion(Usuario usuario1, String usuario2)throws RemoteException;
 
     public void mostrarMensaje(String usuario, String mensaje)throws RemoteException;
     

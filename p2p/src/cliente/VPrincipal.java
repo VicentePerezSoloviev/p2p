@@ -157,7 +157,7 @@ public class VPrincipal extends javax.swing.JPanel {
             Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
             try {
                 if(servidor.iniciarSesion(usuario)){
-                    VAmigos graficos = new VAmigos(this.servidor,usuario.getNombreUsuario());
+                    VAmigos graficos = new VAmigos(this.servidor,usuario);
                     JFrame frame = new JFrame("Lista de amigos conectados");
                     WindowListener exitListener = new WindowAdapter() {
                         @Override

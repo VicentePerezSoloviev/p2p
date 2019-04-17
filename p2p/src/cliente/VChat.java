@@ -138,7 +138,7 @@ public class VChat extends javax.swing.JPanel {
     private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
         try {
             if(flagNuevaConversacion){
-                this.usuario2.getCliente().abrirConversacion(this.usuario1, this.usuario2);
+                this.usuario2.getCliente().abrirConversacion(this.usuario1, this.usuario2.getNombreUsuario());
             }
             System.out.println(this.usuario1.getNombreUsuario() + "ENVIANDO MENSAJE " + this.fieldMensaje.getText());
             this.usuario2.getCliente().mostrarMensaje(this.usuario1.getNombreUsuario(), this.fieldMensaje.getText());
