@@ -1,9 +1,6 @@
 package servidor;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.Usuario;
 
 public class Hilo extends Thread {
