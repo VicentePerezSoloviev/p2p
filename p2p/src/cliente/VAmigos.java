@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.io.Serializable;
 import static java.lang.Thread.sleep;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import servidor.InterfazServidor;
  *
  * @author Usuario
  */
-public class VAmigos extends javax.swing.JPanel {
+public class VAmigos extends javax.swing.JPanel{
 
     /**
      * Creates new form VAmigos
@@ -277,7 +278,7 @@ public class VAmigos extends javax.swing.JPanel {
             Usuario usuario2 = this.usuario.getCliente().getAmigo(modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
             VChat f = this.conversacionesAbiertas.get(usuario2.getNombreUsuario());
             if(f == null){         
-                VChat graficos = new VChat(usuario,usuario2,conversacionesAbiertas);
+                VChat graficos = new VChat(usuario,usuario2, this);
                 JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
                 WindowListener exitListener = new WindowAdapter() {
                         @Override
@@ -302,6 +303,32 @@ public class VAmigos extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tablaAmigosMouseReleased
 
+    
+    public void recibirMensaje (Usuario usuario, String mensaje) throws RemoteException{
+        VChat f = this.conversacionesAbiertas.get(usuario.getNombreUsuario());
+        if(f == null){
+            VChat graficos = new VChat(this.usuario,usuario,mensaje,this);
+            JFrame frame = new JFrame("Chat con " + usuario.getNombreUsuario());
+            WindowListener exitListener = new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    conversacionesAbiertas.remove(usuario.getNombreUsuario());
+                }
+            };
+            frame.addWindowListener(exitListener);
+            frame.add(graficos);
+            frame.setVisible(true);
+            frame.revalidate();
+            frame.pack();
+            graficos.setVisible(true);
+            this.conversacionesAbiertas.put(usuario.getNombreUsuario(),f);
+        }
+        else{
+            f.mostrarMensaje(usuario.getNombreUsuario(),mensaje);
+            f.setVisible(true);
+            SwingUtilities.getWindowAncestor(f).toFront();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAnadirAmigo;

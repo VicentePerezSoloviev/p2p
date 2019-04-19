@@ -33,13 +33,11 @@ import servidor.InterfazServidor;
 public class VPrincipal extends javax.swing.JPanel {
 
     private InterfazServidor servidor;
-    private final InterfazCliente cliente;
     boolean flagNombre,flagContra;
     
     public VPrincipal(String url) throws NotBoundException, MalformedURLException, RemoteException {
         servidor = (InterfazServidor) Naming.lookup(url);
         System.out.println("Lookup completado.");
-        cliente = new ImplementacionCliente();
         flagNombre=false;
         flagContra=false;
         initComponents();

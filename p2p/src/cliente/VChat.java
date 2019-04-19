@@ -32,15 +32,25 @@ public class VChat extends javax.swing.JPanel {
     ArrayList <String> mensajes = new ArrayList();
     private boolean flagNuevaConversacion = true;
     DefaultListModel modelo;
-     HashMap <String, VChat> conversacionesAbiertas;
+    VAmigos VPadre;
     
-    public VChat(Usuario usuario1, Usuario usuario2, HashMap <String, VChat> conversacionesAbiertas) {
+    public VChat(Usuario usuario1, Usuario usuario2, VAmigos VPadre) {
         initComponents();
         this.nombreUsuario.setText(usuario2.getNombreUsuario());
         this.usuario1=usuario1;
         this.usuario2=usuario2;
         modelo = new DefaultListModel();
-        this.conversacionesAbiertas=conversacionesAbiertas;
+        this.VPadre=VPadre;
+    }
+    
+     public VChat(Usuario usuario1, Usuario usuario2, String mensaje, VAmigos VPadre) throws RemoteException {
+        initComponents();
+        this.nombreUsuario.setText(usuario2.getNombreUsuario());
+        this.usuario1=usuario1;
+        this.usuario2=usuario2;
+        modelo = new DefaultListModel();
+        mostrarMensaje(usuario2.getNombreUsuario(), mensaje);
+        this.VPadre= VPadre;
     }
 
     /**
@@ -141,19 +151,28 @@ public class VChat extends javax.swing.JPanel {
 
     private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
         try {
-            if(flagNuevaConversacion){
-                this.usuario2.getCliente().abrirConversacion(this.usuario2, this.usuario1.getNombreUsuario(), this.conversacionesAbiertas);
-                this.flagNuevaConversacion=false;
-            }
-            else{
-                this.usuario2.getCliente().setConversacion(this.conversacionesAbiertas.get(this.usuario2.getNombreUsuario()), this.usuario2,this.usuario1);
-            }
-            System.out.println(this.usuario1.getNombreUsuario() + "ENVIANDO MENSAJE " + this.fieldMensaje.getText());
-            this.usuario2.getCliente().mostrarMensaje(this.usuario1.getNombreUsuario(), this.fieldMensaje.getText());
+            //        try {
+//            if(flagNuevaConversacion){
+//                this.usuario2.getCliente().abrirConversacion(this.usuario2, this.usuario1.getNombreUsuario(), this.conversacionesAbiertas);
+//                this.flagNuevaConversacion=false;
+//            }
+//            else{
+//                this.usuario2.getCliente().setConversacion(this.conversacionesAbiertas.get(this.usuario2.getNombreUsuario()), this.usuario2,this.usuario1);
+//            }
+//            System.out.println(this.usuario1.getNombreUsuario() + "ENVIANDO MENSAJE " + this.fieldMensaje.getText());
+//            this.usuario2.getCliente().mostrarMensaje(this.usuario1.getNombreUsuario(), this.fieldMensaje.getText());
+//        } catch (RemoteException ex) {
+//            Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+            String mensaje = this.fieldMensaje.getText();
+            this.fieldMensaje.setText("");
+            this.usuario2.getCliente().setGraficos(VPadre); //NO SE PUEDE SERIALZIAR UN COMPONENTE DE LA UI (ES UNA CHAPUZA)
+            this.usuario2.getCliente().recbirMensaje(this.usuario1, mensaje);
+            mostrarMensaje(this.usuario1.getNombreUsuario(),mensaje);
         } catch (RemoteException ex) {
             Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
         }
-        mostrarMensaje(this.usuario1.getNombreUsuario(),this.fieldMensaje.getText());
+
     }//GEN-LAST:event_botonEnviarActionPerformed
 
     private void botonArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonArchivoActionPerformed
@@ -164,19 +183,15 @@ public class VChat extends javax.swing.JPanel {
             System.out.println(selectedFile.getName());
         }
     }//GEN-LAST:event_botonArchivoActionPerformed
-
-    
-    public void mostrarMensaje (String usuario,String mensaje){
-        this.flagNuevaConversacion=false;
-        String mensajeFinal = "[" + usuario + "] " + mensaje;      
-        modelo.addElement(mensajeFinal);
-                    System.out.println(usuario1 + "RECIBIENDO MENSAJE " + mensaje);
-
-        this.listaMensajes.setModel(modelo);
-    }
-    
+   
     public void mostrarArchivo (String mensaje){
         
+    }
+    
+    public void mostrarMensaje(String usuario, String mensaje) throws RemoteException{
+        String mensajeFinal = "[" + usuario + "] " + mensaje;   
+        modelo.addElement(mensajeFinal);
+        listaMensajes.setModel(modelo);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
