@@ -2,6 +2,7 @@ package modelo;
 
 import cliente.ImplementacionCliente;
 import cliente.InterfazCliente;
+import cliente.VAmigos;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
@@ -13,12 +14,14 @@ public class Usuario implements Serializable{
     public Usuario (String n, String p) throws RemoteException {
         this.nombreUsuario = n;
         this.password = p;
-        this.cliente=new ImplementacionCliente();
     }
     
     public Usuario (String n) throws RemoteException {
         this.nombreUsuario = n;
-        this.cliente=new ImplementacionCliente();
+    }
+    
+    public void setCliente (VAmigos graficos) throws RemoteException{
+        this.cliente=new ImplementacionCliente(graficos);
     }
 
     public String getNombreUsuario() {

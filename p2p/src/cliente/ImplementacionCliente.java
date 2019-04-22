@@ -8,8 +8,6 @@ package cliente;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
-import javax.swing.JFrame;
 import modelo.Usuario;
 
 /**
@@ -21,9 +19,10 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
     private VAmigos graficos;
     private ArrayList <Usuario> usuarios;
     
-    public ImplementacionCliente() throws RemoteException {
+    public ImplementacionCliente(VAmigos graficos) throws RemoteException {
         super();
         usuarios = new ArrayList<>();
+        this.graficos = graficos;
     }
     
     @Override

@@ -38,7 +38,7 @@ public class VAmigos extends javax.swing.JPanel{
      * @param usuario
      */
     
-    private ImageIcon icono;
+    private final ImageIcon icono;
     private InterfazServidor servidor;
     private ArrayList<Usuario> amigos;
     ModeloTablaAmigos modelo;
@@ -47,9 +47,12 @@ public class VAmigos extends javax.swing.JPanel{
 
     
     public VAmigos(InterfazServidor servidor,Usuario usuario) throws RemoteException {
-        amigos = servidor.listarAmigosConectados(usuario);
         this.usuario = usuario;
-        this.servidor=servidor;
+        this.usuario.setCliente(this);
+                this.servidor=servidor;
+
+        this.servidor.iniciarSesion(this.usuario);
+        amigos = servidor.listarAmigosConectados(this.usuario);
         icono=new ImageIcon(this.getClass().getResource("/iconos/chat.png"));
         initComponents();
         this.nombreUsuario.setText(this.usuario.getNombreUsuario());
@@ -292,7 +295,7 @@ public class VAmigos extends javax.swing.JPanel{
                 frame.revalidate();
                 frame.pack();
                 graficos.setVisible(true);
-                this.conversacionesAbiertas.put(usuario2.getNombreUsuario(),f);
+                this.conversacionesAbiertas.put(usuario2.getNombreUsuario(),graficos);
             }
             else{
                 f.setVisible(true);
@@ -307,6 +310,7 @@ public class VAmigos extends javax.swing.JPanel{
     public void recibirMensaje (Usuario usuario, String mensaje) throws RemoteException{
         VChat f = this.conversacionesAbiertas.get(usuario.getNombreUsuario());
         if(f == null){
+            System.out.println("Creando ventana con U1 -> " + this.usuario.getNombreUsuario() + " y U2 -> " + usuario.getNombreUsuario());
             VChat graficos = new VChat(this.usuario,usuario,mensaje,this);
             JFrame frame = new JFrame("Chat con " + usuario.getNombreUsuario());
             WindowListener exitListener = new WindowAdapter() {
@@ -321,13 +325,15 @@ public class VAmigos extends javax.swing.JPanel{
             frame.revalidate();
             frame.pack();
             graficos.setVisible(true);
-            this.conversacionesAbiertas.put(usuario.getNombreUsuario(),f);
+            this.conversacionesAbiertas.put(usuario.getNombreUsuario(),graficos);
         }
         else{
             f.mostrarMensaje(usuario.getNombreUsuario(),mensaje);
             f.setVisible(true);
             SwingUtilities.getWindowAncestor(f).toFront();
         }
+        
+        System.out.println(this.conversacionesAbiertas + " de " + this.usuario);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

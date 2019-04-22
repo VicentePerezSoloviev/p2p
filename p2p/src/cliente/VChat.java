@@ -8,12 +8,10 @@ package cliente;
 import java.io.File;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import modelo.Usuario;
 
 /**
@@ -166,7 +164,7 @@ public class VChat extends javax.swing.JPanel {
 //        }
             String mensaje = this.fieldMensaje.getText();
             this.fieldMensaje.setText("");
-            this.usuario2.getCliente().setGraficos(VPadre); //NO SE PUEDE SERIALZIAR UN COMPONENTE DE LA UI (ES UNA CHAPUZA)
+            //this.usuario2.getCliente().setGraficos(VPadre); //NO SE PUEDE SERIALZIAR UN COMPONENTE DE LA UI (ES UNA CHAPUZA)
             this.usuario2.getCliente().recbirMensaje(this.usuario1, mensaje);
             mostrarMensaje(this.usuario1.getNombreUsuario(),mensaje);
         } catch (RemoteException ex) {

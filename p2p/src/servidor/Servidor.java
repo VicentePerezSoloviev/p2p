@@ -42,7 +42,7 @@ public class Servidor {
             /*Activamos RMI en el puerto que se espera. Si no esta creado lo creamos*/
             startRegistry(Servidor.puerto);
             
-            ImplementacionServidor objetoExportar = new ImplementacionServidor();      //funcion para calcular pi
+            ImplementacionServidor objetoExportar = new ImplementacionServidor();
             
             url = "rmi://" + Servidor.nombreHost + ":" + Servidor.puerto + "/mensajeria";      //creo URL
             
