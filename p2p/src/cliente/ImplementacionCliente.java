@@ -5,6 +5,7 @@
  */
 package cliente;
 
+import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -68,6 +69,11 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
     @Override
     public void recbirMensaje(Usuario usuario, String mensaje) throws RemoteException {
         this.graficos.recibirMensaje(usuario, mensaje);
+    }
+
+    @Override
+    public void recibirArchivo(Usuario usuario, File archivo) {
+        this.graficos.recibirArchivo(usuario, archivo);
     }
     
 }

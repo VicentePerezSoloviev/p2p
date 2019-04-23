@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import static java.lang.Thread.sleep;
@@ -332,8 +333,6 @@ public class VAmigos extends javax.swing.JPanel{
             f.setVisible(true);
             SwingUtilities.getWindowAncestor(f).toFront();
         }
-        
-        System.out.println(this.conversacionesAbiertas + " de " + this.usuario);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -347,4 +346,39 @@ public class VAmigos extends javax.swing.JPanel{
     private javax.swing.JLabel nombreUsuario;
     private javax.swing.JTable tablaAmigos;
     // End of variables declaration//GEN-END:variables
+
+    void recibirArchivo(Usuario usuario, File archivo) {
+        VChat f = this.conversacionesAbiertas.get(usuario.getNombreUsuario());
+        if(f == null){
+            VChat graficos = new VChat(this.usuario,usuario,this);
+            JFrame frame = new JFrame("Chat con " + usuario.getNombreUsuario());
+            WindowListener exitListener = new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    conversacionesAbiertas.remove(usuario.getNombreUsuario());
+                }
+            };
+            frame.addWindowListener(exitListener);
+            frame.add(graficos);
+            frame.setVisible(true);
+            frame.revalidate();
+            frame.pack();
+            graficos.setVisible(true);
+            this.conversacionesAbiertas.put(usuario.getNombreUsuario(),graficos);
+            try {
+                graficos.descargarArchivo(archivo);
+            } catch (IOException ex) {
+                Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            try {
+                f.descargarArchivo(archivo);
+            } catch (IOException ex) {
+                Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            f.setVisible(true);
+            SwingUtilities.getWindowAncestor(f).toFront();
+        }
+    }
 }

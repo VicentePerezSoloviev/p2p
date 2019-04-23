@@ -5,6 +5,7 @@
  */
 package cliente;
 
+import java.io.File;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import javax.swing.JFrame;
@@ -23,5 +24,7 @@ public interface InterfazCliente extends java.rmi.Remote{
     public void recbirMensaje (Usuario usuario, String mensaje) throws RemoteException;
         
     public void setGraficos (VAmigos graficos)throws RemoteException;
+
+    public void recibirArchivo(Usuario usuario1, File archivo) throws RemoteException;
     
 }
