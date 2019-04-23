@@ -280,6 +280,32 @@ public class DAOUsuario {
         
         return null;
     }
+
+    public boolean comprobarCredenciales(Usuario u) {
+        boolean resul = false;
+        String query = "select 1 from usuarios where nombre= '" + u.getNombreUsuario() + "' and password='"+u.getPassword()+"';";
+        
+        /*Cogemos todos los amigos cuando usuario es el nombreA*/
+        try {
+            conn = DriverManager.getConnection(url, nombre, passwd);
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            
+            if (rs.next()) {
+                st.close();
+                return true;
+            }
+            
+            st.close();
+            return false;
+            
+        }catch (SQLException e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+        }
+        
+        return false;
+    }
     
 }
 

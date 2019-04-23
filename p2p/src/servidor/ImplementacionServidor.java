@@ -45,6 +45,11 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         }
         return array;
     }
+    
+    @Override
+    public boolean comprobarCredenciales (Usuario u) throws RemoteException {
+        return this.daoUsuario.comprobarCredenciales(u);
+    }
 
     @Override
     public boolean iniciarSesion(Usuario u) throws RemoteException{

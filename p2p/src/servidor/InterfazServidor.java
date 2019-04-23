@@ -75,6 +75,8 @@ public interface InterfazServidor extends Remote {
     
     public ArrayList<String> listarUsuariosString () throws RemoteException;
     
+    public boolean comprobarCredenciales (Usuario u) throws RemoteException;
+    
     
     
     
