@@ -75,13 +75,12 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
 
     @Override
     public boolean cerrarSesion(String u) throws RemoteException{
-        synchronized(listaUsuariosConectados) {
             for (Usuario us: this.listaUsuariosConectados) {
                 if (us.getNombreUsuario().equals(u)){
                     this.listaUsuariosConectados.remove(us);
                 }
             }
-        }
+        
         return true;
         
     }

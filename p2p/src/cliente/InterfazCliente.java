@@ -6,6 +6,8 @@
 package cliente;
 
 import java.rmi.RemoteException;
+import java.util.HashMap;
+import javax.swing.JFrame;
 import modelo.Usuario;
 
 /**
@@ -14,12 +16,12 @@ import modelo.Usuario;
  */
 public interface InterfazCliente extends java.rmi.Remote{
     
-        public Usuario getAmigo(String usuario) throws RemoteException;
+    public Usuario getAmigo(String usuario) throws RemoteException;
        
     public void registrarAmigo (Usuario usuario) throws RemoteException;
     
-    public void abrirConversacion(Usuario usuario1, String usuario2)throws RemoteException;
-
-    public void mostrarMensaje(String usuario, String mensaje)throws RemoteException;
+    public void recbirMensaje (Usuario usuario, String mensaje) throws RemoteException;
+        
+    public void setGraficos (VAmigos graficos)throws RemoteException;
     
 }

@@ -8,7 +8,6 @@ package cliente;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import javax.swing.JFrame;
 import modelo.Usuario;
 
 /**
@@ -17,12 +16,13 @@ import modelo.Usuario;
  */
 public class ImplementacionCliente extends UnicastRemoteObject implements InterfazCliente {
     
-    private VChat graficos;
+    private VAmigos graficos;
     private ArrayList <Usuario> usuarios;
     
-    public ImplementacionCliente() throws RemoteException {
+    public ImplementacionCliente(VAmigos graficos) throws RemoteException {
         super();
         usuarios = new ArrayList<>();
+        this.graficos = graficos;
     }
     
     @Override
@@ -32,23 +32,23 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
         }
     }
 
-    @Override
-    public void abrirConversacion(Usuario usuario1, String usuario2) throws RemoteException {
-                Usuario aux = this.getAmigo(usuario2);
-                graficos = new VChat(aux,usuario1);
-                JFrame frame = new JFrame("Chat con " + usuario1.getNombreUsuario());
-                frame.add(graficos);
-                frame.setVisible(true);
-                frame.revalidate();
-                frame.pack();
-                graficos.setVisible(true);
- 
-    }
-
-    @Override
-    public void mostrarMensaje(String usuario, String mensaje) throws RemoteException {
-        graficos.mostrarMensaje(usuario, mensaje);
-    }
+//    @Override
+//    public VChat abrirConversacion(Usuario usuario1, String usuario2, HashMap <String, VChat> conversaciones) throws RemoteException {
+//                Usuario aux = this.getAmigo(usuario2);
+//                graficos = new VChat(usuario1,aux, conversaciones);
+//                JFrame frame = new JFrame("Chat con " + aux.getNombreUsuario());
+//                frame.add(graficos);
+//                frame.setVisible(true);
+//                frame.revalidate();
+//                frame.pack();
+//                graficos.setVisible(true);
+//                return graficos;
+//    }
+//
+//    @Override
+//    public void mostrarMensaje(String usuario, String mensaje) throws RemoteException {
+//        graficos.mostrarMensaje(usuario, mensaje);
+//    }
 
     @Override
     public Usuario getAmigo(String usuario) throws RemoteException {
@@ -58,6 +58,16 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
             }
         }
         return null;
+    }
+
+    public void setGraficos (VAmigos graficos)throws RemoteException{
+        this.graficos=graficos;
+    }
+    
+    
+    @Override
+    public void recbirMensaje(Usuario usuario, String mensaje) throws RemoteException {
+        this.graficos.recibirMensaje(usuario, mensaje);
     }
     
 }
