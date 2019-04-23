@@ -6,9 +6,11 @@
 package cliente;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import static java.lang.Thread.sleep;
 import java.nio.file.Files;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -192,34 +194,58 @@ public class VChat extends javax.swing.JPanel {
     
     public void descargarArchivo(File archivo) throws IOException{
         
-        int opcion = JOptionPane.showConfirmDialog(null, this.usuario2.getNombreUsuario() + " te está intentando enviar un archivo. Quieres descargarlo? "
-                + "(Nombre del archivo: " + archivo.getName() + ")", "Aviso", JOptionPane.YES_NO_OPTION);
+        /*int opcion = JOptionPane.showConfirmDialog(null, this.usuario2.getNombreUsuario() + " te está intentando enviar un archivo. Quieres descargarlo? "
+                + "(Nombre del archivo: " + archivo.getName() + ")", "Aviso", JOptionPane.YES_NO_OPTION);*/
+        Integer enter = new Integer (0);
+        VConfirmacion confirmacion = new VConfirmacion(this.usuario2.getNombreUsuario() + " te está intentando enviar un archivo. Quieres descargarlo? " + "(Nombre del archivo: " + archivo.getName() + ")", this, archivo);
+        confirmacion.setVisible(true);
         
-        if ( opcion == JOptionPane.YES_OPTION) {
-            byte[] data = Files.readAllBytes(archivo.toPath());
         
+    }
+    void aux(File archivo){
+//        new Thread(){
+//                @Override
+//                public void run(){
+//                    boolean flag = true;
+        byte[] data = null;
+        try {
+            data = Files.readAllBytes(archivo.toPath());
+        } catch (IOException ex) {
+            Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         String extension = "";
 
         int i = archivo.getName().lastIndexOf('.');
         if (i > 0) {
             extension = archivo.getName().substring(i+1);
         }
-        
-        File file = new File("D:\\archivode" + this.usuario2.getNombreUsuario() + "." + extension);
-       
+
+        File file = new File("E:\\archivode" + usuario2.getNombreUsuario() + "." + extension);
+            System.out.println(file.getAbsolutePath());
+
         while(file.exists()){
             indice ++;
-            file = new File("D:\\archivode" + this.usuario2.getNombreUsuario() + indice + "." + extension);
+            file = new File("E:\\archivode" + usuario2.getNombreUsuario() + indice + "." + extension);
+            System.out.println(file.getAbsolutePath());
         }
-        
-        OutputStream out = new FileOutputStream(file);
-        out.write(data);
-        out.close();
-        
-        String mensajeFinal = "Se ha descargado el el archivo [" + archivo.getName() + "] de " + this.usuario2.getNombreUsuario();   
+
+        OutputStream out;
+        try {
+            out = new FileOutputStream(file);
+            out.write(data);
+            out.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        String mensajeFinal = "Se ha descargado el el archivo [" + archivo.getName() + "] de " + usuario2.getNombreUsuario();   
         modelo.addElement(mensajeFinal);
-        listaMensajes.setModel(modelo);    
-}             
+        listaMensajes.setModel(modelo); 
+//                }
+//            }.start();
     }
     
     public void mostrarMensaje(String usuario, String mensaje) throws RemoteException{
