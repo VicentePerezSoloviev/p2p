@@ -179,6 +179,7 @@ public class VChat extends javax.swing.JPanel {
         if (returnValue == JFileChooser.APPROVE_OPTION){
             File selectedFile = fileChooser.getSelectedFile();
             System.out.println(selectedFile.getName());
+            
         }
     }//GEN-LAST:event_botonArchivoActionPerformed
    
