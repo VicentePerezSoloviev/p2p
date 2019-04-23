@@ -2,6 +2,7 @@ package servidor;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import modelo.Usuario;
 
@@ -97,6 +98,12 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     }
 
     @Override
+    public ArrayList<String> listarAmigos(String u) throws RemoteException{
+        return daoUsuario.listarAmigos(u);
+    }
+
+    
+    @Override
     public ArrayList<Usuario> listarAmigosConectados(Usuario u) throws RemoteException{
         ArrayList<Usuario> usuariosConectados = new ArrayList<>(this.listarUsuariosConectados());
         for (Usuario us: usuariosConectados) System.out.println(us.getNombreUsuario());
@@ -124,7 +131,7 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     }
 
     @Override
-    public void crearPeticionAmistad(String emisor, String receptor) throws RemoteException{
+    public void crearPeticionAmistad(String emisor, String receptor) throws RemoteException, SQLException{
         if (!emisor.equals(receptor)) {
             int a=0;
             for (Usuario u: this.daoUsuario.listarUsuarios()) {

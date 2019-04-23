@@ -154,7 +154,7 @@ public class VPrincipal extends javax.swing.JPanel {
         try {                                                 
             Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
             try {
-                //if(servidor.iniciarSesion(usuario)){
+                if(servidor.comprobarCredenciales(usuario)){
                     VAmigos graficos = new VAmigos(this.servidor,usuario);
                     JFrame frame = new JFrame("Lista de amigos conectados");
                     WindowListener exitListener = new WindowAdapter() {
@@ -180,12 +180,12 @@ public class VPrincipal extends javax.swing.JPanel {
                     frame.pack();
                     graficos.setVisible(true);
                     SwingUtilities.getWindowAncestor(this).dispose();
-                //}
-                //else{
+                }
+                else{
                     this.contra.setText("");
                     this.nombreUsuario.setBackground(Color.red);
                     JOptionPane.showMessageDialog(new JPanel(), "Usuario o contraseña incorrectos", "Error de autentificación", JOptionPane.ERROR_MESSAGE);
-                //}
+                }
             } catch (RemoteException ex) {
                 Logger.getLogger(VPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -222,17 +222,10 @@ public class DAOUsuario {
         return false;
     }
 
-    public void crearPeticion(String emisor, String receptor) {
+    public void crearPeticion(String emisor, String receptor) throws SQLException {
         String query = "INSERT INTO AMG_PET values ('"+emisor+"','"+receptor+"', 0);";
-        
-        try {
             ejecutarSentencia(query);
             conn.close();
-          }
-          catch (SQLException e) {
-            System.err.println("Got an exception!");
-            System.err.println(e.getMessage());
-          }
     }
 
     public void responder(String emisor, String receptor, boolean respuesta) {

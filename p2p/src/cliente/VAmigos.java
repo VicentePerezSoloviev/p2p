@@ -102,7 +102,7 @@ public class VAmigos extends javax.swing.JPanel{
                 public void run(){
                     while(true){
                             try {
-                                sleep(5000);
+                                sleep(1000);
                                 synchronized(amigos){
                                     amigos=servidor.listarAmigosConectados(usuario);
                                 }                                

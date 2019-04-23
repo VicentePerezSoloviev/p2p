@@ -2,6 +2,7 @@ package servidor;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import modelo.Usuario;
 
@@ -65,7 +66,7 @@ public interface InterfazServidor extends Remote {
     
     
     /*Creamos peticion */
-    public void crearPeticionAmistad(String emisor, String receptor) throws RemoteException;
+    public void crearPeticionAmistad(String emisor, String receptor) throws RemoteException, SQLException;
     
     
     /*Responder B si o no
@@ -77,7 +78,7 @@ public interface InterfazServidor extends Remote {
     
     public boolean comprobarCredenciales (Usuario u) throws RemoteException;
     
-    
+    public ArrayList<String> listarAmigos(String u) throws RemoteException;
     
     
 }

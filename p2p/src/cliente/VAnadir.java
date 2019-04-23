@@ -6,10 +6,12 @@
 package cliente;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import modelo.Usuario;
 import servidor.InterfazServidor;
 
@@ -26,11 +28,8 @@ public class VAnadir extends javax.swing.JPanel {
     private final String usuario;
     private final ImageIcon iconoMas;
     private InterfazServidor servidor;
-    
     ArrayList<Usuario> arrayUsuarios;
-    
     ModeloTablaAmigos modelo;
-    
     
     
     public VAnadir(InterfazServidor servidor, String usuario) throws RemoteException {
@@ -38,6 +37,24 @@ public class VAnadir extends javax.swing.JPanel {
         this.servidor = servidor;
         this.usuario=usuario;
         arrayUsuarios = servidor.listarUsuarios();
+        ArrayList<String> arrayAmigos = this.servidor.listarAmigos(usuario);
+        
+        for(int i=0;i<arrayUsuarios.size();i++){
+            if(arrayUsuarios.get(i).getNombreUsuario().equals(usuario)){
+                this.arrayUsuarios.remove(i);
+                break;
+            }
+        }
+        
+        for(int j=0;j<arrayUsuarios.size();j++){
+            for(int k=0;k<arrayAmigos.size();k++){
+                if(arrayUsuarios.get(j).getNombreUsuario().equals(arrayAmigos.get(k))){
+                    this.arrayUsuarios.remove(j);
+                }
+            }
+        }
+        
+        
         iconoMas=new ImageIcon(this.getClass().getResource("/iconos/anadir.jpg"));
         
         initComponents();
@@ -105,11 +122,12 @@ public class VAnadir extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tablaUsuariosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseReleased
-
         try {
             servidor.crearPeticionAmistad(usuario,modelo.getUsuario(tablaUsuarios.getSelectedRow()));
         } catch (RemoteException ex) {
             Logger.getLogger(VAnadir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Ya existe una petición para el usuario " + modelo.getUsuario(tablaUsuarios.getSelectedRow()), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_tablaUsuariosMouseReleased
 
