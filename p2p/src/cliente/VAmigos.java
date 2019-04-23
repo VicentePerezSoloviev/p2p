@@ -278,32 +278,34 @@ public class VAmigos extends javax.swing.JPanel{
     }//GEN-LAST:event_botonOpcionesActionPerformed
 
     private void tablaAmigosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAmigosMouseReleased
-        try {
-            Usuario usuario2 = this.usuario.getCliente().getAmigo(modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
-            VChat f = this.conversacionesAbiertas.get(usuario2.getNombreUsuario());
-            if(f == null){         
-                VChat graficos = new VChat(usuario,usuario2, this);
-                JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
-                WindowListener exitListener = new WindowAdapter() {
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-                            conversacionesAbiertas.remove(usuario2.getNombreUsuario());
-                        }
-                    };
-                frame.addWindowListener(exitListener);
-                frame.add(graficos);
-                frame.setVisible(true);
-                frame.revalidate();
-                frame.pack();
-                graficos.setVisible(true);
-                this.conversacionesAbiertas.put(usuario2.getNombreUsuario(),graficos);
+        if(this.tablaAmigos.getSelectedRow()!=-1){          
+            try {
+                Usuario usuario2 = this.usuario.getCliente().getAmigo(modelo.getUsuario(this.tablaAmigos.getSelectedRow()));
+                VChat f = this.conversacionesAbiertas.get(usuario2.getNombreUsuario());
+                if(f == null){         
+                    VChat graficos = new VChat(usuario,usuario2, this);
+                    JFrame frame = new JFrame("Chat con " + usuario2.getNombreUsuario());
+                    WindowListener exitListener = new WindowAdapter() {
+                            @Override
+                            public void windowClosing(WindowEvent e) {
+                                conversacionesAbiertas.remove(usuario2.getNombreUsuario());
+                            }
+                        };
+                    frame.addWindowListener(exitListener);
+                    frame.add(graficos);
+                    frame.setVisible(true);
+                    frame.revalidate();
+                    frame.pack();
+                    graficos.setVisible(true);
+                    this.conversacionesAbiertas.put(usuario2.getNombreUsuario(),graficos);
+                }
+                else{
+                    f.setVisible(true);
+                    SwingUtilities.getWindowAncestor(f).toFront();
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
             }
-            else{
-                f.setVisible(true);
-                SwingUtilities.getWindowAncestor(f).toFront();
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(VAmigos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_tablaAmigosMouseReleased
 

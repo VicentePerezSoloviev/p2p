@@ -6,13 +6,17 @@
 package cliente;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import modelo.Usuario;
 
 /**
@@ -32,6 +36,7 @@ public class VChat extends javax.swing.JPanel {
     private boolean flagNuevaConversacion = true;
     DefaultListModel modelo;
     VAmigos VPadre;
+    int indice;
     
     public VChat(Usuario usuario1, Usuario usuario2, VAmigos VPadre) {
         initComponents();
@@ -40,6 +45,7 @@ public class VChat extends javax.swing.JPanel {
         this.usuario2=usuario2;
         modelo = new DefaultListModel();
         this.VPadre=VPadre;
+        this.indice = 0;
     }
     
      public VChat(Usuario usuario1, Usuario usuario2, String mensaje, VAmigos VPadre) throws RemoteException {
@@ -165,7 +171,11 @@ public class VChat extends javax.swing.JPanel {
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION){
             File archivo = fileChooser.getSelectedFile();
-            this.usuario2.getCliente().recibirArchivo(this.usuario1, archivo);
+            try {
+                this.usuario2.getCliente().recibirArchivo(this.usuario1, archivo);
+            } catch (RemoteException ex) {
+                Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
+            }
             mostrarArchivo(this.usuario1.getNombreUsuario(),archivo);
             
         }
@@ -181,7 +191,35 @@ public class VChat extends javax.swing.JPanel {
     }
     
     public void descargarArchivo(File archivo) throws IOException{
-        archivo.createNewFile();
+        
+        int opcion = JOptionPane.showConfirmDialog(null, this.usuario2.getNombreUsuario() + " te está intentando enviar un archivo. Quieres descargarlo? "
+                + "(Nombre del archivo: " + archivo.getName() + ")", "Aviso", JOptionPane.YES_NO_OPTION);
+        
+        if ( opcion == JOptionPane.YES_OPTION) {
+            byte[] data = Files.readAllBytes(archivo.toPath());
+        
+        String extension = "";
+
+        int i = archivo.getName().lastIndexOf('.');
+        if (i > 0) {
+            extension = archivo.getName().substring(i+1);
+        }
+        
+        File file = new File("D:\\archivode" + this.usuario2.getNombreUsuario() + "." + extension);
+       
+        while(file.exists()){
+            indice ++;
+            file = new File("D:\\archivode" + this.usuario2.getNombreUsuario() + indice + "." + extension);
+        }
+        
+        OutputStream out = new FileOutputStream(file);
+        out.write(data);
+        out.close();
+        
+        String mensajeFinal = "Se ha descargado el el archivo [" + archivo.getName() + "] de " + this.usuario2.getNombreUsuario();   
+        modelo.addElement(mensajeFinal);
+        listaMensajes.setModel(modelo);    
+}             
     }
     
     public void mostrarMensaje(String usuario, String mensaje) throws RemoteException{
