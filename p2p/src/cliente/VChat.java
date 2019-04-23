@@ -6,6 +6,7 @@
 package cliente;
 
 import java.io.File;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -149,22 +150,8 @@ public class VChat extends javax.swing.JPanel {
 
     private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
         try {
-            //        try {
-//            if(flagNuevaConversacion){
-//                this.usuario2.getCliente().abrirConversacion(this.usuario2, this.usuario1.getNombreUsuario(), this.conversacionesAbiertas);
-//                this.flagNuevaConversacion=false;
-//            }
-//            else{
-//                this.usuario2.getCliente().setConversacion(this.conversacionesAbiertas.get(this.usuario2.getNombreUsuario()), this.usuario2,this.usuario1);
-//            }
-//            System.out.println(this.usuario1.getNombreUsuario() + "ENVIANDO MENSAJE " + this.fieldMensaje.getText());
-//            this.usuario2.getCliente().mostrarMensaje(this.usuario1.getNombreUsuario(), this.fieldMensaje.getText());
-//        } catch (RemoteException ex) {
-//            Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
-//        }
             String mensaje = this.fieldMensaje.getText();
             this.fieldMensaje.setText("");
-            //this.usuario2.getCliente().setGraficos(VPadre); //NO SE PUEDE SERIALZIAR UN COMPONENTE DE LA UI (ES UNA CHAPUZA)
             this.usuario2.getCliente().recbirMensaje(this.usuario1, mensaje);
             mostrarMensaje(this.usuario1.getNombreUsuario(),mensaje);
         } catch (RemoteException ex) {
@@ -177,14 +164,28 @@ public class VChat extends javax.swing.JPanel {
         JFileChooser fileChooser = new JFileChooser();
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION){
-            File selectedFile = fileChooser.getSelectedFile();
-            System.out.println(selectedFile.getName());
+            File archivo = fileChooser.getSelectedFile();
+            try {
+                this.usuario2.getCliente().recibirArchivo(this.usuario1, archivo);
+            } catch (RemoteException ex) {
+                Logger.getLogger(VChat.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            mostrarArchivo(this.usuario1.getNombreUsuario(),archivo);
             
         }
+//        else if(returnValue == JFileChooser.CANCEL_OPTION){
+//            
+//        }
     }//GEN-LAST:event_botonArchivoActionPerformed
    
-    public void mostrarArchivo (String mensaje){
-        
+    public void mostrarArchivo (String usuario, File archivo){
+        String mensajeFinal = "[" + usuario + "] ha enviado el archivo [" + archivo.getName() + "]";   
+        modelo.addElement(mensajeFinal);
+        listaMensajes.setModel(modelo);
+    }
+    
+    public void descargarArchivo(File archivo) throws IOException{
+        archivo.createNewFile();
     }
     
     public void mostrarMensaje(String usuario, String mensaje) throws RemoteException{
