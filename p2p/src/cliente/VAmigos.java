@@ -17,6 +17,8 @@ import static java.lang.Thread.sleep;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -60,7 +62,7 @@ public class VAmigos extends javax.swing.JPanel{
         modelo = (ModeloTablaAmigos) this.tablaAmigos.getModel();
         
             JPopupMenu menu = new JPopupMenu();
-        JMenuItem opcion1 = new JMenuItem("Cambiar contraseña");
+        JMenuItem opcion1 = new JMenuItem("Opciones de la cuenta");
         
         opcion1.addActionListener((ActionEvent a) -> {
                     try {

@@ -26,5 +26,7 @@ public interface InterfazCliente extends java.rmi.Remote{
     public void setGraficos (VAmigos graficos)throws RemoteException;
 
     public void recibirArchivo(Usuario usuario1, File archivo) throws RemoteException;
+
+    public void terminarConversacion() throws RemoteException;
     
 }

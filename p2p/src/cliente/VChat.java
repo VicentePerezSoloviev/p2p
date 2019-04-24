@@ -182,9 +182,6 @@ public class VChat extends javax.swing.JPanel {
             mostrarArchivo(this.usuario1.getNombreUsuario(),archivo);
             
         }
-//        else if(returnValue == JFileChooser.CANCEL_OPTION){
-//            
-//        }
     }//GEN-LAST:event_botonArchivoActionPerformed
    
     public void mostrarArchivo (String usuario, File archivo){
@@ -194,20 +191,12 @@ public class VChat extends javax.swing.JPanel {
     }
     
     public void descargarArchivo(File archivo) throws IOException{
-        
-        /*int opcion = JOptionPane.showConfirmDialog(null, this.usuario2.getNombreUsuario() + " te está intentando enviar un archivo. Quieres descargarlo? "
-                + "(Nombre del archivo: " + archivo.getName() + ")", "Aviso", JOptionPane.YES_NO_OPTION);*/
-        Integer enter = new Integer (0);
         VConfirmacion confirmacion = new VConfirmacion(this.usuario2.getNombreUsuario() + " te está intentando enviar un archivo. Quieres descargarlo? " + "(Nombre del archivo: " + archivo.getName() + ")", this, archivo);
         confirmacion.setVisible(true);
         
         
     }
     void aux(File archivo){
-//        new Thread(){
-//                @Override
-//                public void run(){
-//                    boolean flag = true;
         byte[] data = null;
         try {
             data = Files.readAllBytes(archivo.toPath());
@@ -245,8 +234,6 @@ public class VChat extends javax.swing.JPanel {
         String mensajeFinal = "Se ha descargado el el archivo [" + archivo.getName() + "] de " + usuario2.getNombreUsuario();   
         modelo.addElement(mensajeFinal);
         listaMensajes.setModel(modelo); 
-//                }
-//            }.start();
     }
     
     public void mostrarMensaje(String usuario, String mensaje) throws RemoteException{

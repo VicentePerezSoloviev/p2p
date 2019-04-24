@@ -9,6 +9,7 @@ import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
 import modelo.Usuario;
 
 /**
@@ -74,6 +75,11 @@ public class ImplementacionCliente extends UnicastRemoteObject implements Interf
     @Override
     public void recibirArchivo(Usuario usuario, File archivo) {
         this.graficos.recibirArchivo(usuario, archivo);
+    }
+
+    @Override
+    public void terminarConversacion() throws RemoteException {
+          SwingUtilities.getWindowAncestor(this.graficos).dispose();
     }
     
 }

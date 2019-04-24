@@ -69,9 +69,9 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
         
         for (Usuario array1 : array) {
             if (array1.getNombreUsuario().equals(u.getNombreUsuario()) && array1.getPassword().equals(u.getPassword())){
-                synchronized(listaUsuariosConectados) {
+                //synchronized(listaUsuariosConectados) {
                     this.listaUsuariosConectados.add(u);
-                }
+                //}
                 return true;
             }
         }
@@ -92,9 +92,9 @@ public class ImplementacionServidor extends UnicastRemoteObject implements Inter
     }
 
     public ArrayList<Usuario> listarUsuariosConectados() {
-        synchronized(listaUsuariosConectados) {
+        //synchronized(listaUsuariosConectados) {
             return this.listaUsuariosConectados;
-        }
+        //}
     }
 
     @Override
