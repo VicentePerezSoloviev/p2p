@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import modelo.Usuario;
 
 /**
@@ -192,7 +193,7 @@ public class VChat extends javax.swing.JPanel {
     
     public void descargarArchivo(File archivo) throws IOException{
         
-        int opcion = JOptionPane.showConfirmDialog(null, this.usuario2.getNombreUsuario() + " te está intentando enviar un archivo. Quieres descargarlo? "
+        int opcion = JOptionPane.showConfirmDialog(new JPanel(), this.usuario2.getNombreUsuario() + " te está intentando enviar un archivo. Quieres descargarlo? "
                 + "(Nombre del archivo: " + archivo.getName() + ")", "Aviso", JOptionPane.YES_NO_OPTION);
         
         if ( opcion == JOptionPane.YES_OPTION) {

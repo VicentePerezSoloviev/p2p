@@ -144,7 +144,15 @@ public class VPrincipal extends javax.swing.JPanel {
     private void botonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarseActionPerformed
         try {                                                 
             Usuario usuario=new Usuario(this.nombreUsuario.getText(),this.contra.getText());
-                servidor.introducirUsuario(usuario);
+            if(servidor.comprobarCredenciales(usuario)){
+                JOptionPane.showMessageDialog(new JPanel(), "Ya existe un usuario con ese nombre", "Error de identificación", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                int opcion = JOptionPane.showConfirmDialog(null, "Quieres registrarte como " +  usuario.getNombreUsuario(), "Confirmación", JOptionPane.YES_NO_OPTION);
+                if ( opcion == JOptionPane.YES_OPTION) {                    
+                    servidor.introducirUsuario(usuario);
+                }
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(VPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -183,7 +191,8 @@ public class VPrincipal extends javax.swing.JPanel {
                 }
                 else{
                     this.contra.setText("");
-                    this.nombreUsuario.setBackground(Color.red);
+                    this.nombreUsuario.setBackground(Color.getHSBColor(12, 53, 87));
+                    this.contra.setBackground(Color.getHSBColor(12, 53, 87));
                     JOptionPane.showMessageDialog(new JPanel(), "Usuario o contraseña incorrectos", "Error de autentificación", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (RemoteException ex) {
